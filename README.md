@@ -24,5 +24,5 @@ To launch a single unit test, just launch nose specifying a single python file
 
 To create a new test just
 
-- add a file into /tests/test_<category_you_want_to_test>
-- create a file test_<something>
+- add a file into /tests/test_(category_you_want_to_test)
+- create a file test_(something)
