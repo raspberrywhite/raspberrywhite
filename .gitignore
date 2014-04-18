@@ -1,0 +1,5 @@
+venv
+*.pyc
+*.zip
+.DS_Store
+tests/assets
