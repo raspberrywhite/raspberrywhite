@@ -21,10 +21,11 @@ class Mp3Listener(PlayerListener):
     def onShutdown(self):
         pass
 
-class TestAtoomaHeader():
+class TestPlayer():
 
     def setUp(self):
         self.filename = 'tests/assets/test.mp3'
+        self.filename_bad = 'tests/assets/raspiwhite.png'
         self.player = Mp3Player()
         self.listener = Mp3Listener()
         self.player.attachListener(self.listener)
@@ -45,6 +46,18 @@ class TestAtoomaHeader():
         assert self.player.getStatus() == player.PAUSE
         self.player.resume()
         assert self.player.getStatus() == player.PLAY
+        while self.player.isPlaying():
+            pass
+        assert self.player.getStatus() == player.STOP
+
+    def test_bad_file(self):
+        self.player.play(self.filename_bad)
+        while self.player.isPlaying():
+            pass
+        assert self.player.getStatus() == player.STOP
+
+    def test_bad_path(self):
+        self.player.play('hello/' + self.filename)
         while self.player.isPlaying():
             pass
         assert self.player.getStatus() == player.STOP

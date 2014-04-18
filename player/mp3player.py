@@ -4,6 +4,9 @@ import subprocess
 import threading
 import time
 
+# Implementation based on mpg321 remote controlled
+# https://github.com/e3c/mpg321/blob/master/README.remote
+
 class AutoDetectThread(threading.Thread):
     def attachPlayer(self, player):
         self.player = player
@@ -26,6 +29,8 @@ class Mp3Player(player.Player):
         self.source = source
         self.p = subprocess.Popen(['mpg321', '-R', 'anyword'],
             stdin=subprocess.PIPE, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+        if not os.path.exists(source):
+            return
         self.p.stdin.write('LOAD %s\n' % self.source)
         self.auto_detect_thread = AutoDetectThread()
         self.auto_detect_thread.attachPlayer(self)
