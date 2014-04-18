@@ -20,7 +20,7 @@ To test a category run nose specifying the category directory
 
 To launch a single unit test, just launch nose specifying a single python file
 
-    $ nosetests --with-gae --without-sandbox tests/test_player/<your_test>
+    $ nosetests tests/test_player/<your_test>
 
 To create a new test just
 
