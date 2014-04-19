@@ -1,6 +1,7 @@
 import player
 from player import Mp3Player, PlayerListener
 import time
+import requests
 
 class Popmuzik():
 
@@ -17,8 +18,14 @@ class Popmuzik():
         self.__player.attachListener(self.__listener)
 
     def requestSong(self):
-        time.sleep(4)
-        self.__player.play('tests/assets/test.mp3')
+        r = requests.get('http://localhost:8000/songs/next')
+        if r.status_code == 200:
+            song_json = r.json()
+            if 'path' in song_json:
+                self.__player.play(song_json['path'])
+        elif r.status_code == 404:
+            time.sleep(10)
+            self.requestSong()
 
     def start(self):
         self.requestSong()
