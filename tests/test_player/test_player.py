@@ -2,33 +2,12 @@ import player
 from player import Mp3Player, PlayerListener
 import time
 
-class Mp3Listener(PlayerListener):
-    def __init__(self):
-        self.finished = False
-
-    def onPlay(self, source):
-        pass
-
-    def onPause(self):
-        pass
-
-    def onResume(self):
-        pass
-
-    def onStop(self):
-        self.finished = True
-
-    def onShutdown(self):
-        pass
-
 class TestPlayer():
 
     def setUp(self):
         self.filename = 'tests/assets/test.mp3'
         self.filename_bad = 'tests/assets/raspiwhite.png'
         self.player = Mp3Player()
-        self.listener = Mp3Listener()
-        self.player.attachListener(self.listener)
 
     def tearDown(self):
         self.player.shutdown()
