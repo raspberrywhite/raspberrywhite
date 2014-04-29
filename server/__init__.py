@@ -3,9 +3,8 @@ from flask import Flask, jsonify
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 
-@app.route("/songs/next")
-def get_songs_next():
-    return jsonify( { 'path' : 'tests/assets/test.mp3' } ), 200
-
 if __name__ == "__main__":
     app.run()
+
+from server import views
+from server.models.user import User
