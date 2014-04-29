@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 
 @app.route("/songs/next")
 def get_songs_next():
