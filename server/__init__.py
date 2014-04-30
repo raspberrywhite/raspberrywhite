@@ -7,4 +7,4 @@ if __name__ == "__main__":
     app.run()
 
 from server import views
-from server.models.user import User
+from server.models import User
