@@ -5,8 +5,16 @@ if [ -d $PYENV_HOME ]; then
     rm -rf $PYENV_HOME
 fi
 
+if [ -f assets.zip ]; then
+    rm -f assets.zip
+fi
+
+if [ -d tests/assets ]; then
+    rm -rf tests/assets
+fi
+
 wget https://dl.dropboxusercontent.com/u/35837126/assets.zip
-unzip assets.zip -d tests/
+unzip -o assets.zip -d tests/
 
 virtualenv --no-site-packages $PYENV_HOME
 . $PYENV_HOME/bin/activate
