@@ -3,3 +3,4 @@ venv
 *.zip
 .DS_Store
 tests/assets
+*.sqlite3
