@@ -1,12 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-class User(models.Model):
-    id = models.BigIntegerField(primary_key=True)
-    name = models.TextField(blank=True)
-    username = models.TextField(blank=True)
-    email = models.TextField(blank=True)
-    is_admin = models.BooleanField(default=False)
-    last_request = models.BigIntegerField()
+class Player(models.Model):
+    user = models.OneToOneField('auth.User', primary_key=True, related_name='player')
+    last_time_req = models.BigIntegerField(default=0)
 
 class Song(models.Model):
     id = models.BigIntegerField(primary_key=True)
@@ -15,6 +12,6 @@ class Song(models.Model):
     path = models.TextField(blank=True)
 
 class Request(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(Player)
     song = models.ForeignKey(Song)
     priority = models.BigIntegerField()

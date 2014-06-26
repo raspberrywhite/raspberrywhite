@@ -12,3 +12,10 @@ Calculate user priority now
 def calc_priority_now(timelastreq):
     millis = int(round(time.time() * 1000))
     return calc_priority(timelastreq, millis)
+
+"""
+Calculate last request
+"""
+def calc_last_request():
+    millis = int(round(time.time() * 1000))
+    return millis

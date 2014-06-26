@@ -68,7 +68,7 @@ AUTHENTICATION_BACKENDS = (
    'django.contrib.auth.backends.ModelBackend',
 )
 
-LOGIN_REDIRECT_URL = '/accounts/register/'
+LOGIN_REDIRECT_URL = '/playlist/'
 
 SOCIAL_AUTH_FACEBOOK_KEY = '497136996989028'
 SOCIAL_AUTH_FACEBOOK_SECRET = 'a93971a44f9b575bebed9b1b942b2dd1'
