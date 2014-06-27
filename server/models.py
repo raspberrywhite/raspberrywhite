@@ -6,9 +6,8 @@ class Player(models.Model):
     last_time_req = models.BigIntegerField(default=0)
 
 class Song(models.Model):
-    id = models.BigIntegerField(primary_key=True)
-    title = models.TextField(blank=True)
-    artist = models.TextField(blank=True)
+    title = models.TextField()
+    artist = models.TextField()
     path = models.TextField(blank=True)
 
 class Request(models.Model):

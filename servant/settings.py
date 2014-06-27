@@ -26,6 +26,9 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+PROJECT_ROOT = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), ".."),
+)
 
 # Application definition
 
@@ -36,8 +39,15 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social.apps.django_app.default',
     'server',
-    'social.apps.django_app.default'
+    'djangobower'
+)
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'djangobower.finders.BowerFinder',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -90,6 +100,15 @@ ROOT_URLCONF = 'servant.urls'
 
 WSGI_APPLICATION = 'servant.wsgi.application'
 
+STATIC_URL = '/static/'
+
+BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_ROOT, 'components')
+
+BOWER_INSTALLED_APPS = (
+    'jquery#1.9',
+    'underscore',
+    'bootstrap'
+)
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases

@@ -44,6 +44,7 @@ def register(request):
                                     password=password)
             user.save()
             create_player(user)
+        return render(request, 'server/login.html')
     return render(request, 'server/register.html')
 
 @login_required
