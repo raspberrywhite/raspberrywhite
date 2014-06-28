@@ -24,7 +24,7 @@ class Popmuzik():
                 song_json = r.json()
                 if 'path' in song_json:
                     self.__player.play(song_json['path'])
-            elif r.status_code == 404:
+            else:
                 self.__onFetchingFail()
         except ConnectionError:
             self.__onFetchingFail()

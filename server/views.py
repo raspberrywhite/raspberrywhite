@@ -91,3 +91,10 @@ def songrequest(request):
     elif request.method == 'GET':
         return render(request, 'server/request.html')
 
+def get_next_song(request):
+    if request.method == 'GET':
+        requests = models.Request.objects.order_by('priority')
+        if requests:
+            path = requests[0].song.path
+            requests[0].delete()
+            return HttpResponse(json.dumps({'path':path}), 'application/json')
