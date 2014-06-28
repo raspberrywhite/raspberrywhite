@@ -13,15 +13,37 @@
   </div>
 
   <script type="text/javascript">
+
     $( document ).ready(function() {
       load_songs();
+    });
+
+    var csrftoken = $.cookie('csrftoken');
+
+    function csrfSafeMethod(method) {
+      return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+          xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+      }
     });
 
     function load_songs() {
       $.get("/songs/?term=" + $("#songs").val(),function(data,status){
         $( "#songlist" ).empty();
         for(var i = 0 ; i < data.length ; i++) {
-          $("#songlist").append( "<div>" + data[i]['label'] + "</div>" );
+          $("#songlist").append( "<div id='" + data[i]['id'] + "'>" + data[i]['label'] + "</div>" );
+          var id = data[i]['id'];
+          $("#" + data[i]['id']).click(function() {
+            $.post( "/request/", { id_song: id })
+              .done(function( data ) {
+
+              });
+          });
         }
       });
     }
