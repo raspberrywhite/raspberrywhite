@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from server import models
+import json
 import hotstuff
+from django.db.models import Q
 
 def create_player(user):
     try:
@@ -46,6 +49,26 @@ def register(request):
             create_player(user)
         return render(request, 'server/login.html')
     return render(request, 'server/register.html')
+
+
+@login_required
+def search_songs(request):
+    if request.is_ajax():
+        q = request.GET.get('term', '')
+        songs = models.Song.objects.filter(Q(title__icontains = q)|Q(artist__icontains = q ))
+        results = []
+        for song in songs:
+            song_json = {}
+            song_json['id'] = song.id
+            song_json['label'] = song.title + ' ' + song.artist
+            song_json['value'] = song.title + ' ' + song.artist
+            results.append(song_json)
+        data = json.dumps(results)
+        print data
+    else:
+        data = 'fail'
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)
 
 @login_required
 def playlist(request):

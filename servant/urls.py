@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from server.views import login, register, playlist, songrequest
+from server.views import login, register, playlist, songrequest, search_songs
 from django.contrib import admin
 admin.autodiscover()
 
@@ -13,4 +13,5 @@ urlpatterns = patterns('',
     (r'^request/$',  songrequest),
     (r'^accounts/login/$',  login),
     (r'^accounts/register/$',  register),
+    (r'^songs/$',  search_songs)
 )

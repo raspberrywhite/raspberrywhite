@@ -3,16 +3,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href='{% static 'bootstrap/dist/css/bootstrap.min.css' %}'>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href='{% static 'bootstrap/dist/css/bootstrap.min.css' %}'>
 
-    <link rel="stylesheet" href='{% static 'server/form.css' %}'>
+  <link rel="stylesheet" href='{% static 'server/form.css' %}'>
+  <script type="text/javascript" src='{% static 'jquery/jquery.js' %}'></script>
 
-    <script type="text/javascript" src='{% static 'jquery/jquery.js' %}'></script>
 </head>
 
 <body>
-    <div id="content">
-        {% block content %}{% endblock %}
-    </div>
+  <div id="content">
+    {% block content %}{% endblock %}
+  </div>
 </body>
 </html>

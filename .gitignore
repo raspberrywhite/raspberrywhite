@@ -5,3 +5,4 @@ venv
 tests/assets
 *.sqlite3
 components/
+songs/

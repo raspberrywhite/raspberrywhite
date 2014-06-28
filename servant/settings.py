@@ -107,7 +107,7 @@ BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_ROOT, 'components')
 BOWER_INSTALLED_APPS = (
     'jquery#1.9',
     'underscore',
-    'bootstrap'
+    'bootstrap',
 )
 
 # Database

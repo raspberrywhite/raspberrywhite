@@ -1,5 +1,5 @@
 body {
-    background: #eee !important;
+  background: #eee !important;
 }
 
 .wrapper {
@@ -13,4 +13,17 @@ body {
   margin: 0 auto;
   background-color: #fff;
   border: 1px solid rgba(0,0,0,0.1);
+}
+
+@media (max-width: 480px) {
+  .wrapper {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+  body {
+    background: #fff !important;
+  }
+  .form-signin {
+    border: 0px solid rgba(0,0,0,0.1);
+  }
 }

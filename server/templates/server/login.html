@@ -1,11 +1,13 @@
 {% extends "server/base.html" %}
 
+{% load static %}
+
 {% block content %}
 
   <div class="wrapper">
     <form class="form-signin" method="post">
       {% csrf_token %}
-      <h2 class="form-signin-heading">Please login</h2>
+      <center><img src='{% static 'server/raspiwhite.png' %}'/></center>
       <input type="text" class="form-control" id="username" name="username" placeholder="Username" required="" autofocus="" />
       <input type="password" class="form-control" id="password" name="password" placeholder="Password" required=""/>
       <input type="hidden" name="next" value="{{ next|escape }}" />
