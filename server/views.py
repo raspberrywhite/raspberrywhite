@@ -60,8 +60,25 @@ def search_songs(request):
         for song in songs:
             song_json = {}
             song_json['id'] = song.id
-            song_json['label'] = song.title + ' ' + song.artist
-            song_json['value'] = song.title + ' ' + song.artist
+            song_json['artist'] = song.artist
+            song_json['title'] = song.title
+            results.append(song_json)
+        data = json.dumps(results)
+        print data
+    else:
+        data = 'fail'
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)
+
+@login_required
+def get_current_playlist(request):
+    if request.is_ajax():
+        requests = models.Request.objects.all()
+        results = []
+        for request in requests:
+            song_json = {}
+            song_json['artist'] = request.song.artist
+            song_json['title'] = request.song.title
             results.append(song_json)
         data = json.dumps(results)
         print data

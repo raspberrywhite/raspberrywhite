@@ -9,7 +9,7 @@
   <div class="ui-widget">
     <label for="songs">Songs: </label>
     <input id="songs">
-    <div id="songlist"></div>
+    <div id="songlist" class="list-group"></div>
   </div>
 
   <script type="text/javascript">
@@ -24,6 +24,13 @@
       return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
     }
 
+    function renderSongInDiv(id, artist, title) {
+      var header = "<h4 class='list-group-item-heading'>" + artist + "</h4>";
+      var body = "<p class='list-group-item-text'>" + title + "</p>";
+      var div = "<a href='#' class='list-group-item' id='" + id + "'>" + header + body + "</div>";
+      return div;
+    }
+
     $.ajaxSetup({
       beforeSend: function(xhr, settings) {
         if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
@@ -36,7 +43,8 @@
       $.get("/songs/?term=" + $("#songs").val(),function(data,status){
         $( "#songlist" ).empty();
         for(var i = 0 ; i < data.length ; i++) {
-          $("#songlist").append( "<div id='" + data[i]['id'] + "'>" + data[i]['label'] + "</div>" );
+          $("#songlist").append(renderSongInDiv(data[i]['id'],data[i]['artist'],
+            data[i]['title']));
           var id = data[i]['id'];
           $("#" + data[i]['id']).click(function() {
             $.post( "/request/", { id_song: id })
