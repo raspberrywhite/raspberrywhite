@@ -55,7 +55,7 @@ def register(request):
 
 @login_required
 def search_songs(request):
-    if request.is_ajax():
+    if request.method == 'GET':
         q = request.GET.get('term', '')
         songs = models.Song.objects.filter(Q(title__icontains = q)|Q(artist__icontains = q ))
         results = []
@@ -97,6 +97,7 @@ def playlist(request):
 def songrequest(request):
     if request.method == 'POST':
         id_song = request.POST.get('id_song', 123)
+        print id_song
         song = models.Song.objects.get(id=id_song)
         user = get_player(request.user)
         print user

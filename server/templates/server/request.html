@@ -8,57 +8,39 @@
 
   <div class="ui-widget">
     <label for="songs">Songs: </label>
-    <input id="songs">
+    <input id="songinput" ng-model="query" ng-change="search()">
     <div id="songlist" class="list-group"></div>
+    {% verbatim %}
+    <div class='list-group-item' ng-repeat="song in songs"
+        ng-click="sendrequest(song)" id='{{ song.id }}'>
+      <h4 class='list-group-item-heading'>{{ song.artist }}</h4>
+      <p class='list-group-item-text'>{{ song.title }}</p>
+    </div>
+    {% endverbatim %}
   </div>
 
   <script type="text/javascript">
 
-    $( document ).ready(function() {
-      load_songs();
-    });
-
-    var csrftoken = $.cookie('csrftoken');
-
-    function csrfSafeMethod(method) {
-      return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-    }
-
-    function renderSongInDiv(id, artist, title) {
-      var header = "<h4 class='list-group-item-heading'>" + artist + "</h4>";
-      var body = "<p class='list-group-item-text'>" + title + "</p>";
-      var div = "<a href='#' class='list-group-item' id='" + id + "'>" + header + body + "</div>";
-      return div;
-    }
-
-    $.ajaxSetup({
-      beforeSend: function(xhr, settings) {
-        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-          xhr.setRequestHeader("X-CSRFToken", csrftoken);
-        }
-      }
-    });
-
-    function load_songs() {
-      $.get("/songs/?term=" + $("#songs").val(),function(data,status){
-        $( "#songlist" ).empty();
-        for(var i = 0 ; i < data.length ; i++) {
-          $("#songlist").append(renderSongInDiv(data[i]['id'],data[i]['artist'],
-            data[i]['title']));
-          var id = data[i]['id'];
-          $("#" + data[i]['id']).click(function() {
-            $.post( "/request/", { id_song: id })
-              .done(function( data ) {
-
-              });
+    var app = angular.module( "Raspiwhite", [] );
+    app.config(['$httpProvider', function($httpProvider) {
+        $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{ csrf_token|escapejs }}';
+        $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+    }]);
+    app.controller('RaspiwhiteCtrl', function ($scope, $http) {
+        $scope.search = function() {
+          $http.get("/songs/?term=" + $scope.query).success(function(data) {
+            $scope.songs = data;
           });
         }
-      });
-    }
 
-    $("#songs").on('input',function(e){
-      load_songs();
+        $scope.sendrequest = function(song) {
+          $http.post("/request/", $.param({id_song: song.id }))
+            .done(function(data) {
+              $scope.songs = data;
+            });
+          }
     });
+
   </script>
 
 {% endblock %}
