@@ -14,3 +14,4 @@ class Request(models.Model):
     user = models.ForeignKey(Player)
     song = models.ForeignKey(Song)
     priority = models.BigIntegerField()
+    now_play = models.BooleanField(default=False)

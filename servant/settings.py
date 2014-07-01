@@ -30,6 +30,11 @@ PROJECT_ROOT = os.path.abspath(
     os.path.join(os.path.dirname(__file__), ".."),
 )
 
+REDIS_SSEQUEUE_CONNECTION_SETTINGS = {
+    'location': 'localhost:6379',
+    'db': 2,
+}
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -41,7 +46,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'social.apps.django_app.default',
     'server',
-    'djangobower'
+    'djangobower',
+    'gunicorn'
 )
 
 STATICFILES_FINDERS = (
@@ -139,3 +145,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = "static"
+

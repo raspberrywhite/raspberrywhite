@@ -8,6 +8,8 @@ from server import models
 import json
 import hotstuff
 from django.db.models import Q
+from django_sse.redisqueue import RedisQueueView
+from django_sse.redisqueue import send_event
 
 def create_player(user):
     try:
@@ -97,6 +99,8 @@ def songrequest(request):
         id_song = request.POST.get('id_song', 123)
         song = models.Song.objects.get(id=id_song)
         user = get_player(request.user)
+        print user
+        print song
         request = models.Request()
         request.user = user
         request.song = song
@@ -110,8 +114,21 @@ def songrequest(request):
 
 def get_next_song(request):
     if request.method == 'GET':
+        try:
+            now_request = models.Request.objects.get(now_play=True)
+            now_request.delete()
+        except:
+            pass
+        send_event('newsong', "ok", channel="foo")
         requests = models.Request.objects.order_by('priority')
         if requests:
             path = requests[0].song.path
-            requests[0].delete()
+            requests[0].now_play = True
+            requests[0].save()
             return HttpResponse(json.dumps({'path':path}), 'application/json')
+        #return HttpResponse(json.dumps({'status':'OK'}), 'application/json')
+class SSE(RedisQueueView):
+    def get_redis_channel(self):
+        ch = self.redis_channel
+        print ch
+        return ch

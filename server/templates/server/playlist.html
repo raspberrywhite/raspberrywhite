@@ -14,12 +14,6 @@
 
   <script type="text/javascript">
 
-    $( document ).ready(function() {
-      setInterval(function(){
-        load_playlist();
-      }, 3000);
-    });
-
     function renderSongInDiv(id, artist, title) {
       var header = "<h4 class='list-group-item-heading'>" + artist + "</h4>";
       var body = "<p class='list-group-item-text'>" + title + "</p>";
@@ -36,6 +30,14 @@
         }
       });
     }
+
+    var source = new EventSource("/sse/foo");
+
+    source.addEventListener('newsong', function(e) {
+      console.log(e.data);
+      load_playlist();
+    }, false);
+
   </script>
 
 {% endblock %}
