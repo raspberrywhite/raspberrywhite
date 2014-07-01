@@ -10,13 +10,43 @@
   <link rel="stylesheet" href='{% static 'server/form.css' %}'>
   <script type="text/javascript" src='{% static 'jquery/jquery.js' %}'></script>
   <script type="text/javascript" src='{% static 'jquery.cookie/jquery.cookie.js' %}'></script>
+  <script type="text/javascript" src='{% static 'bootstrap/dist/js/bootstrap.js' %}'></script>
   <script src='{% static 'angular/angular.js' %}'></script>
 
 </head>
 
 <body ng-controller="RaspiwhiteCtrl">
-  <div id="content">
-    {% block content %}{% endblock %}
-  </div>
+    <nav class="navbar navbar-inverse navbar-fixed-top navbar-absolute" role="navigation" style="border-radius: 0;">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" rel="home" href="#" title="">
+            <img style="height:40px; margin-top: -10px;"
+             src="{% static 'server/raspiwhite-invert.png' %}">
+          </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            {% verbatim %}
+            <li ng-class="{'active': nav=='playlist'}"><a href="/playlist">Playlist</a></li>
+            <li ng-class="{'active': nav=='request'}"><a href="/request">New request</a></li>
+            {% endverbatim %}
+            <li><a href="/request">Logout Andrea Stagi</a></li>
+          </ul>
+
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
 </body>
 </html>

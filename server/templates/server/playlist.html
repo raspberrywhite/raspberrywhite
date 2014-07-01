@@ -4,10 +4,7 @@
 
 {% block content %}
 
-  <h1>Playlist</h1>
-
-  <div class="ui-widget">
-  <div class="ui-widget">
+  <div class="container-fluid">
     <div id="songlist" class="list-group"></div>
     {% verbatim %}
     <div class='list-group-item' ng-repeat="song in songs" id='{{ song.id }}'>
@@ -16,9 +13,6 @@
     </div>
     {% endverbatim %}
   </div>
-  </div>
-
-  <a href="/request">Add song</a>
 
   <script type="text/javascript">
 
@@ -28,7 +22,7 @@
         $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
     }]);
     app.controller('RaspiwhiteCtrl', function ($scope, $http) {
-
+      $scope.nav = 'playlist';
       function load_playlist() {
         $http.get("/playlist/current").success(function(data) {
           console.log(data);

@@ -4,44 +4,42 @@
 
 {% block content %}
 
-<h1>New request</h1>
+  <div class="container-fluid">
+    <input class="form-control" placeholder="Search.." id="songinput" ng-model="query" ng-change="search()">
+    <div id="songlist" class="list-group"></div>
+    {% verbatim %}
+    <div class='list-group-item' ng-repeat="song in songs"
+        ng-click="sendrequest(song)" id='{{ song.id }}'>
+      <h4 class='list-group-item-heading'>{{ song.artist }}</h4>
+      <p class='list-group-item-text'>{{ song.title }}</p>
+    </div>
+    {% endverbatim %}
+  </div>
 
-<div class="ui-widget">
-<label for="songs">Songs: </label>
-<input id="songinput" ng-model="query" ng-change="search()">
-<div id="songlist" class="list-group"></div>
-{% verbatim %}
-<div class='list-group-item' ng-repeat="song in songs"
-    ng-click="sendrequest(song)" id='{{ song.id }}'>
-  <h4 class='list-group-item-heading'>{{ song.artist }}</h4>
-  <p class='list-group-item-text'>{{ song.title }}</p>
-</div>
-{% endverbatim %}
-</div>
+  <script type="text/javascript">
 
-<script type="text/javascript">
+    var app = angular.module( "Raspiwhite", [] );
+    app.config(['$httpProvider', function($httpProvider) {
+        $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{ csrf_token|escapejs }}';
+        $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+    }]);
+    app.controller('RaspiwhiteCtrl', function ($scope, $http) {
+        $scope.nav = 'request';
+        $scope.search = function() {
+          $http.get("/songs/?term=" + $scope.query)
+            .success(function(data) {
+              $scope.songs = data;
+            });
+        }
 
-var app = angular.module( "Raspiwhite", [] );
-app.config(['$httpProvider', function($httpProvider) {
-    $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{ csrf_token|escapejs }}';
-    $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
-}]);
-app.controller('RaspiwhiteCtrl', function ($scope, $http) {
-    $scope.search = function() {
-      $http.get("/songs/?term=" + $scope.query)
-        .success(function(data) {
-          $scope.songs = data;
-        });
-    }
+        $scope.sendrequest = function(song) {
+          $http.post("/request/", $.param({id_song: song.id }))
+            .done(function(data) {
+              $scope.songs = data;
+            });
+        }
+    });
 
-    $scope.sendrequest = function(song) {
-      $http.post("/request/", $.param({id_song: song.id }))
-        .done(function(data) {
-          $scope.songs = data;
-        });
-    }
-});
-
-</script>
+  </script>
 
 {% endblock %}
