@@ -75,7 +75,7 @@ def search_songs(request):
 @login_required
 def get_current_playlist(request):
     if request.method == 'GET':
-        requests = models.Request.objects.all()
+        requests = models.Request.objects.order_by('priority')
         results = []
         for request in requests:
             song_json = {}
