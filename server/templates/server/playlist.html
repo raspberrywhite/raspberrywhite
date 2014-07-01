@@ -7,36 +7,43 @@
   <h1>Playlist</h1>
 
   <div class="ui-widget">
+  <div class="ui-widget">
     <div id="songlist" class="list-group"></div>
+    {% verbatim %}
+    <div class='list-group-item' ng-repeat="song in songs" id='{{ song.id }}'>
+      <h4 class='list-group-item-heading'>{{ song.artist }}</h4>
+      <p class='list-group-item-text'>{{ song.title }}</p>
+    </div>
+    {% endverbatim %}
+  </div>
   </div>
 
   <a href="/request">Add song</a>
 
   <script type="text/javascript">
 
-    function renderSongInDiv(id, artist, title) {
-      var header = "<h4 class='list-group-item-heading'>" + artist + "</h4>";
-      var body = "<p class='list-group-item-text'>" + title + "</p>";
-      var div = "<a href='#' class='list-group-item' id='" + id + "'>" + header + body + "</div>";
-      return div;
-    }
+    var app = angular.module( "Raspiwhite", [] );
+    app.config(['$httpProvider', function($httpProvider) {
+        $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{ csrf_token|escapejs }}';
+        $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+    }]);
+    app.controller('RaspiwhiteCtrl', function ($scope, $http) {
 
-    function load_playlist() {
-      $.get("/playlist/current", function(data,status){
-        $( "#songlist" ).empty();
-        for(var i = 0 ; i < data.length ; i++) {
-          $("#songlist").append(renderSongInDiv(data[i]['id'],data[i]['artist'],
-            data[i]['title']));
-        }
-      });
-    }
+      function load_playlist() {
+        $http.get("/playlist/current").success(function(data) {
+          console.log(data);
+          $scope.songs = data;
+        });
+      }
 
-    var source = new EventSource("/sse/foo");
+      var source = new EventSource("/sse/foo");
 
-    source.addEventListener('newsong', function(e) {
-      console.log(e.data);
-      load_playlist();
-    }, false);
+      source.addEventListener('newsong', function(e) {
+        console.log(e.data);
+        load_playlist();
+      }, false);
+
+    });
 
   </script>
 
