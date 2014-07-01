@@ -109,6 +109,7 @@ def songrequest(request):
         request.save()
         user.last_time_req = request.priority
         user.save()
+        send_event('newsong', "ok", channel="foo")
         return HttpResponseRedirect("/playlist")
     elif request.method == 'GET':
         return render(request, 'server/request.html')
