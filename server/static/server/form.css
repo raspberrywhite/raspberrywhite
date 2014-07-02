@@ -1,8 +1,40 @@
 body {
   background: #eee !important;
+  padding-top: 68px;
+}
+
+
+input {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.btn {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+@font-face {
+  font-family: 'Pacifico';
+  src: local('Pacifico.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.whitetitle {
+  font-family: 'Pacifico';
+  color: #FFF;
+  font-size: 1.75em; margin: .47em 0;
 }
 
 .wrapper {
+  margin-top: 80px;
+  margin-bottom: 80px;
+}
+
+.centerwrapper {
+  max-width: 380px;
+  margin: 0 auto;
   margin-top: 80px;
   margin-bottom: 80px;
 }

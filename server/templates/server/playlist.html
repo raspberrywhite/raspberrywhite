@@ -11,6 +11,12 @@
       <h4 class='list-group-item-heading'>{{ song.artist }}</h4>
       <p class='list-group-item-text'>{{ song.title }}</p>
     </div>
+    <div class="centerwrapper" ng-show="songs.length == 0">
+        <center>
+          <h1>Playlist is empty!</h1>
+          <a href="/request"><div class="btn btn-lg btn-primary btn-block">+ New request</div></a>
+        </center>
+    </div>
     {% endverbatim %}
   </div>
 
