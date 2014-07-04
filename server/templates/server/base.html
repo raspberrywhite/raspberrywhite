@@ -31,7 +31,9 @@
           <a class="navbar-brand" rel="home" href="#" title="">
             <img style="height:40px; margin-top: -14px;"
              src="{% static 'server/raspiwhite-invert.png' %}">
-             <span class="whitetitle">Raspiwhite</span>
+             {% verbatim %}
+             <span class="whitetitle">{{title}}</span>
+             {% endverbatim %}
           </a>
         </div>
 
@@ -42,7 +44,7 @@
             <li ng-class="{'active': nav=='playlist'}"><a href="/playlist">Playlist</a></li>
             <li ng-class="{'active': nav=='request'}"><a href="/request">New request</a></li>
             {% endverbatim %}
-            <li><a href="/request">Logout Andrea Stagi</a></li>
+            <li><a href="/request">Logout {{user.first_name}} {{user.last_name}}</a></li>
           </ul>
 
         </div><!-- /.navbar-collapse -->

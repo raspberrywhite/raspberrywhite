@@ -25,6 +25,11 @@
     }]);
     app.controller('RaspiwhiteCtrl', function ($scope, $http) {
         $scope.nav = 'request';
+        $scope.title = 'New request';
+        $http.get("/songs/?term=")
+          .success(function(data) {
+            $scope.songs = data;
+          });
         $scope.search = function() {
           $http.get("/songs/?term=" + $scope.query)
             .success(function(data) {

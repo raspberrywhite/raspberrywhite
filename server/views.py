@@ -81,6 +81,7 @@ def get_current_playlist(request):
             song_json = {}
             song_json['artist'] = request.song.artist
             song_json['title'] = request.song.title
+            song_json['now_play'] = request.now_play
             results.append(song_json)
         data = json.dumps(results)
         print data

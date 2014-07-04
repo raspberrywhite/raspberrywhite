@@ -5,19 +5,27 @@
 {% block content %}
 
   <div class="container-fluid">
-    <div id="songlist" class="list-group"></div>
+    <div class="centerwrapper" ng-show="songs.length == 0">
+      <center>
+        <h1>Playlist is empty!</h1>
+        <a href="/request">
+          <div class="btn btn-lg btn-primary btn-block">+ New request</div>
+        </a>
+      </center>
+    </div>
     {% verbatim %}
     <div class='list-group-item' ng-repeat="song in songs" id='{{ song.id }}'>
-      <h4 class='list-group-item-heading'>{{ song.artist }}</h4>
-      <p class='list-group-item-text'>{{ song.title }}</p>
+      <div style='width:84%; float:left;'>
+        <h4 class='list-group-item-heading'>{{ song.artist }}</h4>
+        <p class='list-group-item-text'>{{ song.title }}</p>
+      </div>
+      {% endverbatim %}
+      <div>
+        <img style="height:50px; white-space: nowrap;"
+        src="{% static 'server/playicon.png' %}" ng-show="song.now_play"/>
+        <div style="height:50px; white-space: nowrap;" ng-hide="song.now_play"/>
+      </div>
     </div>
-    <div class="centerwrapper" ng-show="songs.length == 0">
-        <center>
-          <h1>Playlist is empty!</h1>
-          <a href="/request"><div class="btn btn-lg btn-primary btn-block">+ New request</div></a>
-        </center>
-    </div>
-    {% endverbatim %}
   </div>
 
   <script type="text/javascript">
@@ -29,6 +37,7 @@
     }]);
     app.controller('RaspiwhiteCtrl', function ($scope, $http) {
       $scope.nav = 'playlist';
+      $scope.title = 'Playlist';
       function load_playlist() {
         $http.get("/playlist/current").success(function(data) {
           console.log(data);
