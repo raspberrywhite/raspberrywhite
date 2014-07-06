@@ -10,29 +10,40 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from django.core.exceptions import ImproperlyConfigured
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+def get_env_variable(var_name):
+    """ Get the environment variable or return exception """
+
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        error_msg = "Set the %s environment variable" % var_name
+        raise ImproperlyConfigured(error_msg)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'q!8*f9eo!(=qlg@^xm955(q4ues&^3kt7a7dusl_vl=0u1dc3q'
+SECRET_KEY = get_env_variable("RASPBERRYWHITE_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = get_env_variable("RASPBERRYWHITE_DEBUG")
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = get_env_variable("RASPBERRYWHITE_TEMPLATE_DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [get_env_variable("RASPBERRYWHITE_ALLOWED_HOSTS")]
 
 PROJECT_ROOT = os.path.abspath(
     os.path.join(os.path.dirname(__file__), ".."),
 )
 
 REDIS_SSEQUEUE_CONNECTION_SETTINGS = {
-    'location': 'localhost:6379',
-    'db': 2,
+    'location': '{0}:{1}'.format(get_env_variable("RASPBERRYWHITE_REDIS_HOST"),
+        get_env_variable("RASPBERRYWHITE_REDIS_PORT")),
+    'db': get_env_variable("RASPBERRYWHITE_REDIS_DB"),
 }
 
 # Application definition
@@ -97,16 +108,16 @@ SOCIAL_AUTH_PIPELINE = (
     'server.create_player_after_login'
 )
 
-LOGIN_REDIRECT_URL = '/playlist/'
+LOGIN_REDIRECT_URL = get_env_variable("RASPBERRYWHITE_LOGIN_REDIRECT_URL")
 
-SOCIAL_AUTH_FACEBOOK_KEY = '497136996989028'
-SOCIAL_AUTH_FACEBOOK_SECRET = 'a93971a44f9b575bebed9b1b942b2dd1'
+SOCIAL_AUTH_FACEBOOK_KEY = get_env_variable("RASPBERRYWHITE_SOCIAL_AUTH_FACEBOOK_KEY")
+SOCIAL_AUTH_FACEBOOK_SECRET = get_env_variable("RASPBERRYWHITE_SOCIAL_AUTH_FACEBOOK_SECRET")
 
 ROOT_URLCONF = 'servant.urls'
 
 WSGI_APPLICATION = 'servant.wsgi.application'
 
-STATIC_URL = '/static/'
+STATIC_URL = get_env_variable("RASPBERRYWHITE_STATIC_URL")
 
 BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_ROOT, 'components')
 
@@ -147,4 +158,3 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = "static"
-
