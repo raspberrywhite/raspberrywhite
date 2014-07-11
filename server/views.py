@@ -10,6 +10,7 @@ import hotstuff
 from django.db.models import Q
 from django_sse.redisqueue import RedisQueueView
 from django_sse.redisqueue import send_event
+from django.contrib.auth import logout as logout_user
 
 def create_player(user):
     try:
@@ -24,6 +25,10 @@ def get_player(user):
         return models.Player.objects.get(user=user)
     except:
         pass
+
+def logout(request):
+    logout_user(request)
+    return HttpResponseRedirect("/accounts/login/")
 
 def login(request):
     if request.method == 'POST':

@@ -45,7 +45,7 @@
             <li ng-class="{'active': nav=='playlist'}"><a href="/playlist">Playlist</a></li>
             <li ng-class="{'active': nav=='request'}"><a href="/request">New request</a></li>
             {% endverbatim %}
-            <li><a href="{% url 'social:begin' 'facebook' %}">Logout {{user.first_name}} {{user.last_name}}</a></li>
+            <li><a href="/accounts/logout">Logout {{user.first_name}} {{user.last_name}}</a></li>
           </ul>
         </div><!-- /.navbar-collapse -->
         {% endif %}

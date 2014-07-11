@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls import patterns, include, url
 from server.views import login, register, get_current_playlist, playlist
-from server.views import songrequest, search_songs, get_next_song, SSE
+from server.views import songrequest, search_songs, get_next_song, SSE, logout
 from django.contrib import admin
 from django.conf.urls.static import static
 admin.autodiscover()
@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     (r'^playlist/current$', get_current_playlist),
     (r'^request/$', songrequest),
     (r'^accounts/login/$', login),
+    (r'^accounts/logout/$', logout),
     (r'^accounts/register/$', register),
     (r'^songs/$', search_songs),
     (r'^songs/next/$', get_next_song)
