@@ -37,6 +37,7 @@
           </a>
         </div>
 
+        {% if user.is_active %}
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
@@ -44,10 +45,10 @@
             <li ng-class="{'active': nav=='playlist'}"><a href="/playlist">Playlist</a></li>
             <li ng-class="{'active': nav=='request'}"><a href="/request">New request</a></li>
             {% endverbatim %}
-            <li><a href="/request">Logout {{user.first_name}} {{user.last_name}}</a></li>
+            <li><a href="{% url 'social:begin' 'facebook' %}">Logout {{user.first_name}} {{user.last_name}}</a></li>
           </ul>
-
         </div><!-- /.navbar-collapse -->
+        {% endif %}
       </div><!-- /.container-fluid -->
     </nav>
     <div id="content">
