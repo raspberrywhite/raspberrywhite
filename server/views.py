@@ -32,26 +32,33 @@ def logout(request):
 
 def login(request):
     if request.method == 'POST':
+        print "LOGIN"
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
+        next_page = request.POST.get('next', '/playlist')
         user = auth.authenticate(username=username, password=password)
         if user is not None and user.is_active:
             create_player(user)
             auth.login(request, user)
-            return HttpResponseRedirect("/playlist")
+            return HttpResponseRedirect(next_page)
         else:
             return HttpResponseRedirect("/account/invalid/")
-    return render(request, 'server/login.html')
+    else:
+        next_page = request.GET.get('next', '/playlist')
+        return render(request, 'server/login.html', {'next':next_page})
 
 def register(request):
     if request.method == 'POST':
+        firstname = request.POST.get('firstname', '')
+        lastname = request.POST.get('lastname', '')
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
         try:
             User.objects.get(username=username)
         except:
             user = User.objects.create_user(username=username,
-                                    password=password)
+                                    password=password, first_name=firstname,
+                                    last_name=lastname)
             user.save()
             create_player(user)
         return render(request, 'server/login.html')

@@ -5,13 +5,15 @@
 {% block content %}
 
   <div class="wrapper">
-    <form class="form-signin" method="post">
+    <form action="/accounts/register/" class="form-signin" method="post">
       {% csrf_token %}
       <center><img src='{% static 'server/raspiwhite.png' %}'/></center>
+      <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First name" required="" autofocus="" />
+      <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last name" required=""/>
       <input type="text" class="form-control" name="username" id="username" placeholder="Username" required="" autofocus="" />
       <input type="password" class="form-control" name="password" id="password" placeholder="Password" required=""/>
       <input type="hidden" name="next" value="{{ next|escape }}" />
-      <input class="btn btn-lg btn-primary btn-block" type="submit" value="Register" />
+      <input class="btn btn-lg btn-primary btn-block" type="submit" value="Register">
     </form>
   </div>
 

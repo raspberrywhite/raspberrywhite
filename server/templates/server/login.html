@@ -5,18 +5,18 @@
 {% block content %}
 
   <div class="wrapper">
-    <form class="form-signin" method="post">
+    <form action="/accounts/login/" class="form-signin" method="post">
       {% csrf_token %}
       <center><img src='{% static 'server/raspiwhite.png' %}'/></center>
       <input type="text" class="form-control" id="username" name="username" placeholder="Username" required="" autofocus="" />
       <input type="password" class="form-control" id="password" name="password" placeholder="Password" required=""/>
-      <input type="hidden" name="next" value="{{ next|escape }}" />
+      <input type="hidden" name="next" id="next" value="{{next}}" />
 
       <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
 
-    <a href="{% url 'social:begin' 'facebook' %}"><div class="btn btn-lg btn-primary btn-block">Login with Facebook</div></a>
-    <center>or</center>
-    <a href="/accounts/register"><div class="btn btn-lg btn-primary btn-block">Register a new user</div></a>
+      <a href="{% url 'social:begin' 'facebook' %}"><div class="btn btn-lg btn-primary btn-block">Login with Facebook</div></a>
+      <center>or</center>
+      <a href="/accounts/register"><div class="btn btn-lg btn-primary btn-block">Register a new user</div></a>
     </form>
   </div>
 
