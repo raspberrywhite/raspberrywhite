@@ -14,6 +14,8 @@ for f in os.listdir(mypath):
     af = eyed3.load(path)
     artist = af.tag.artist
     title = af.tag.title
+    if models.Song.objects.filter(title = title, artist = artist).exists():
+        continue
     song = models.Song()
     song.path = path
     song.title = title
