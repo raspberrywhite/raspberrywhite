@@ -14,9 +14,9 @@
 
       <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
 
-      <a href="{% url 'social:begin' 'facebook' %}?next={{ next }}"><div class="btn btn-lg btn-primary btn-block">Login with Facebook</div></a>
+      <a class='nounderline' href="{% url 'social:begin' 'facebook' %}?next={{ next }}"><div class="btn btn-lg btn-primary btn-block">Login with Facebook</div></a>
       <center>or</center>
-      <a href="/accounts/register"><div class="btn btn-lg btn-primary btn-block">Register a new user</div></a>
+      <a class='nounderline' href="/accounts/register"><div class="btn btn-lg btn-primary btn-block">Register a new user</div></a>
     </form>
   </div>
 

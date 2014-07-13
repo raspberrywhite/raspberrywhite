@@ -47,6 +47,8 @@ input {
   border: 1px solid rgba(0,0,0,0.1);
 }
 
+a.nounderline {text-decoration: none; }
+
 @media (max-width: 480px) {
   .wrapper {
     margin-top: 0px;
