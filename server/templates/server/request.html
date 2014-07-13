@@ -5,7 +5,7 @@
 {% block content %}
 
   <div class="container-fluid">
-    <input class="form-control" placeholder="Search your song.. ♬ ❤" id="songinput" ng-model="query" ng-change="search()">
+    <input class="form-control" placeholder="❤ ♬ Search the song you want to play ♬ ❤" id="songinput" ng-model="query" ng-change="search()">
     <div id="songlist" class="list-group"></div>
     {% verbatim %}
     <div class='list-group-item listelement' ng-repeat="song in songs"
