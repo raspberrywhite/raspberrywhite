@@ -10,10 +10,17 @@
     {% verbatim %}
     <div class='list-group-item listelement' ng-repeat="song in songs"
         ng-click="sendrequest(song)" id='{{ song.id }}'>
-      <h4 class='list-group-item-heading'>{{ song.artist }}</h4>
-      <p class='list-group-item-text'>{{ song.title }}</p>
-    </div>
+      <div style='width:84%; float:left;'>
+        <h4 class='list-group-item-heading'>{{ song.artist }}</h4>
+        <p class='list-group-item-text'>{{ song.title }}</p>
+      </div>
     {% endverbatim %}
+      <div>
+        <img style="height:50px; white-space: nowrap;"
+        src="{% static 'server/loading.gif' %}" ng-show="song.is_loading"/>
+        <div style="height:50px; white-space: nowrap;" ng-hide="song.is_loading"/>
+      </div>
+    </div>
   </div>
 
   <script type="text/javascript">
@@ -36,9 +43,11 @@
         }
 
         $scope.sendrequest = function(song) {
-          $http.post("/request/", $.param({id_song: song.id }))
-            .done(function(data) {
-              $scope.songs = data;
+          $current_song = song;
+          $current_song.is_loading = true;
+          $http.post("/request/", $.param({ id_song: $current_song.id }))
+            .success(function(data) {
+              $current_song.is_loading = false;
             });
         }
     });
