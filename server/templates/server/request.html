@@ -5,10 +5,10 @@
 {% block content %}
 
   <div class="container-fluid">
-    <input class="form-control" placeholder="Search.." id="songinput" ng-model="query" ng-change="search()">
+    <input class="form-control" placeholder="Search your song.. ♬ ❤" id="songinput" ng-model="query" ng-change="search()">
     <div id="songlist" class="list-group"></div>
     {% verbatim %}
-    <div class='list-group-item' ng-repeat="song in songs"
+    <div class='list-group-item listelement' ng-repeat="song in songs"
         ng-click="sendrequest(song)" id='{{ song.id }}'>
       <h4 class='list-group-item-heading'>{{ song.artist }}</h4>
       <p class='list-group-item-text'>{{ song.title }}</p>

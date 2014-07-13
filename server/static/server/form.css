@@ -49,6 +49,15 @@ input {
 
 a.nounderline {text-decoration: none; }
 
+.listelement {
+  background-color: #fff;
+}
+
+.listelement:hover, .listelement:focus {
+  background-color: #eee;
+  cursor: pointer; cursor: hand;
+}
+
 @media (max-width: 480px) {
   .wrapper {
     margin-top: 0px;
