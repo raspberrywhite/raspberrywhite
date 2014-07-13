@@ -32,7 +32,6 @@ def logout(request):
 
 def login(request):
     if request.method == 'POST':
-        print "LOGIN"
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
         next_page = request.POST.get('next', '/playlist')
