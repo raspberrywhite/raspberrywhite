@@ -9,6 +9,7 @@ class Song(models.Model):
     title = models.TextField()
     artist = models.TextField()
     path = models.TextField(blank=True)
+    last_time_play = models.BigIntegerField(default=0)
 
 class Request(models.Model):
     user = models.ForeignKey(Player)
