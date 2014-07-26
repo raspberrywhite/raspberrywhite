@@ -14,7 +14,7 @@
       </center>
     </div>
     {% verbatim %}
-    <div class='list-group-item' ng-repeat="song in songs" id='{{ song.id }}'>
+    <div class='list-group-item' ng-repeat="song in songs" data-song-id='{{ song.e }}'>
       <div style='width:84%; float:left;'>
         <h4 class='list-group-item-heading'>{{ song.artist }}</h4>
         <p class='list-group-item-text'>{{ song.title }}</p>

@@ -96,9 +96,9 @@ def get_current_playlist(request):
             song_json['now_play'] = request.now_play
             results.append(song_json)
         data = json.dumps(results)
-        print data
     else:
         data = 'fail'
+    print "MY DATA " + data
     mimetype = 'application/json'
     return HttpResponse(data, mimetype)
 
