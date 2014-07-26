@@ -1,9 +1,9 @@
-Django==1.6.5
+git+git://github.com/raspberrywhite/django-sse@f40e90b7910a524b9a5d3e686a7d364c38846fe3
+https://www.djangoproject.com/download/1.7c1/tarball/
 Jinja2==2.7.2
 MarkupSafe==0.21
 Werkzeug==0.9.4
 django-bower==5.0.1
-django-sse==0.4.1
 eyeD3==0.7.4
 gevent==1.0.1
 greenlet==0.4.2
