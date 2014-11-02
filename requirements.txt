@@ -1,4 +1,4 @@
-git+git://github.com/raspberrywhite/django-sse@f40e90b7910a524b9a5d3e686a7d364c38846fe3
+git+git://github.com/niwibe/django-sse
 https://www.djangoproject.com/download/1.7c1/tarball/
 Jinja2==2.7.2
 MarkupSafe==0.21
