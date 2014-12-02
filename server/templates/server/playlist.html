@@ -15,16 +15,17 @@
     </div>
     {% verbatim %}
     <div class='list-group-item' ng-repeat="song in songs" data-song-id='{{ song.e }}'>
-      <div style='width:84%; float:left;'>
+      <div style='float:left;'>
         <h4 class='list-group-item-heading'>{{ song.artist }}</h4>
         <p class='list-group-item-text'>{{ song.title }}</p>
       </div>
       {% endverbatim %}
-      <div>
-        <img style="height:50px; white-space: nowrap;"
+      <div style='float:right;'>
+        <img style="height:50px; width:50px; white-space: nowrap;"
         src="{% static 'server/playicon.png' %}" ng-show="song.now_play"/>
-        <div style="height:50px; white-space: nowrap;" ng-hide="song.now_play"/>
+        <div style="height:50px; width:50px; white-space: nowrap;" ng-hide="song.now_play"></div>
       </div>
+      <br style="clear: both"/>
     </div>
   </div>
 
