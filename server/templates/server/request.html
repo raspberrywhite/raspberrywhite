@@ -10,16 +10,16 @@
     {% verbatim %}
     <div class='list-group-item listelement' ng-repeat="song in songs"
         ng-click="sendrequest(song)" data-song-id='{{ song.id }}'>
-      <div style='width:84%; float:left;'>
+      <div class='listelementleft'>
         <h4 class='list-group-item-heading'>{{ song.artist }}</h4>
         <p class='list-group-item-text'>{{ song.title }}</p>
       </div>
     {% endverbatim %}
-      <div>
-        <img style="height:40px; white-space: nowrap;"
-        src="{% static 'server/loading.gif' %}" ng-show="song.is_loading"/>
-        <div style="height:40px; white-space: nowrap;" ng-hide="song.is_loading"/>
+      <div class='listelementright'>
+        <img style="height:40px;" src="{% static 'server/loading.gif' %}" ng-show="song.is_loading"/>
+        <div style="height:40px;" ng-hide="song.is_loading"></div>
       </div>
+      <br style="clear: both"/>
     </div>
   </div>
 
