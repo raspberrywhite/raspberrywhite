@@ -48,6 +48,17 @@
           $http.post("/request/", $.param({ id_song: $current_song.id }))
             .success(function(data) {
               $current_song.is_loading = false;
+              toastr.options = {
+                "positionClass": "toast-bottom-right",
+              };
+              toastr.success(data.status);
+            })
+            .error(function(data) {
+              $current_song.is_loading = false;
+              toastr.options = {
+                "positionClass": "toast-bottom-right",
+              };
+              toastr.error(data.status);
             });
         }
     });

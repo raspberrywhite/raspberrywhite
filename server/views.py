@@ -114,7 +114,7 @@ def songrequest(request):
         song = models.Song.objects.get(id=id_song)
         now = int(round(time.time() * 1000))
         if (now - song.last_time_play) < 60000 * 60:
-            return HttpResponse(json.dumps({'status':'song recently played'}),
+            return HttpResponse(json.dumps({'status':'Song recently played'}),
                 'application/json', status=405)
         song.last_time_play = now
         song.save()
@@ -129,7 +129,8 @@ def songrequest(request):
         user.last_time_req = request.priority
         user.save()
         send_event('newsong', "ok", channel="foo")
-        return HttpResponseRedirect("/playlist")
+        return HttpResponse(json.dumps({'status':'{} added!'.format(song.title)}),
+            'application/json', status=201)
     elif request.method == 'GET':
         return render(request, 'server/request.html')
 
