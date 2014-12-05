@@ -58,7 +58,8 @@
               toastr.options = {
                 "positionClass": "toast-bottom-right",
               };
-              toastr.error(data.status);
+              if (data.status !== undefined)
+                toastr.error(data.status);
             });
         }
     });
