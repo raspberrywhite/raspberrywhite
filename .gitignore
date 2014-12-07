@@ -6,4 +6,4 @@ tests/assets
 *.sqlite3
 components/
 songs/
-static/
+/static/
