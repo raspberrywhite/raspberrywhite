@@ -1,0 +1,108 @@
+body {
+    background: #eee !important;
+    padding-top: 68px;
+}
+
+
+input {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+a.nounderline {text-decoration: none; }
+
+@font-face {
+    font-family: 'Pacifico';
+    src: local('Pacifico.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@media (max-width: 480px) {
+    .wrapper {
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    body {
+        background: #fff !important;
+    }
+    .form-signin {
+        border: 0px solid rgba(0,0,0,0.1);
+    }
+}
+
+.btn {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.whitetitle {
+    font-family: 'Pacifico';
+    color: #FFF;
+    font-size: 1.75em; margin: .47em 0;
+}
+
+.wrapper {
+    margin-top: 80px;
+    margin-bottom: 80px;
+}
+
+.centerwrapper {
+    max-width: 380px;
+    margin: 0 auto;
+    margin-top: 80px;
+    margin-bottom: 80px;
+}
+
+.form-signin {
+    max-width: 380px;
+    padding: 15px 35px 45px;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.listelement {
+    background-color: #fff;
+}
+
+.listelementleft {
+    float:left;
+    overflow: hidden;
+    width: 90%;
+    height: 50px;
+}
+
+.listelementleft h4 {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.listelementleft p {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.listelementright {
+    float:right;
+    width: 10%;
+    text-align: right;
+}
+
+.listelement:hover, .listelement:focus {
+    background-color: #eee;
+    cursor: pointer; cursor: hand;
+}
+
+@media (max-width: 480px)  {
+    .listelement:hover, .listelement:focus {
+        background-color: #FFF;
+        cursor: none;
+    }
+
+    .listelement:active {
+        background-color: #eee;
+    }
+}
