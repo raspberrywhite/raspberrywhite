@@ -18,19 +18,6 @@ a.nounderline {text-decoration: none; }
     font-style: normal;
 }
 
-@media (max-width: 480px) {
-    .wrapper {
-        margin-top: 0px;
-        margin-bottom: 0px;
-    }
-    body {
-        background: #fff !important;
-    }
-    .form-signin {
-        border: 0px solid rgba(0,0,0,0.1);
-    }
-}
-
 .btn {
     margin-top: 4px;
     margin-bottom: 4px;
@@ -104,5 +91,25 @@ a.nounderline {text-decoration: none; }
 
     .clickable:active {
         background-color: #eee;
+    }
+}
+
+@media (max-width: 480px) {
+    .wrapper {
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    body {
+        background: #fff !important;
+    }
+    .form-signin {
+        border: 0px solid rgba(0,0,0,0.1);
+    }
+}
+
+@media (max-width: 480px) {
+    .wrapper {
+        margin-top: 0px;
+        margin-bottom: 0px;
     }
 }
