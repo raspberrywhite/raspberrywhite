@@ -91,18 +91,18 @@ a.nounderline {text-decoration: none; }
     text-align: right;
 }
 
-.listelement:hover, .listelement:focus {
+.clickable:hover, .clickable:focus {
     background-color: #eee;
     cursor: pointer; cursor: hand;
 }
 
 @media (max-width: 480px)  {
-    .listelement:hover, .listelement:focus {
+    .clickable:hover, .clickable:focus {
         background-color: #FFF;
-        cursor: none;
+        cursor: pointer; cursor: hand;
     }
 
-    .listelement:active {
+    .clickable:active {
         background-color: #eee;
     }
 }
