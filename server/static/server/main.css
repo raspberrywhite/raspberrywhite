@@ -3,7 +3,6 @@ body {
     padding-top: 68px;
 }
 
-
 input {
     margin-top: 4px;
     margin-bottom: 4px;
@@ -81,6 +80,14 @@ a.nounderline {text-decoration: none; }
 .clickable:hover, .clickable:focus {
     background-color: #eee;
     cursor: pointer; cursor: hand;
+}
+
+#toast-container > .toast-error {
+    background-image: url("./sad.png") !important;
+}
+
+#toast-container > .toast-success {
+    background-image: url("./happy.png") !important;
 }
 
 @media (max-width: 480px)  {
