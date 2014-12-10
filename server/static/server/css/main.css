@@ -83,11 +83,11 @@ a.nounderline {text-decoration: none; }
 }
 
 #toast-container > .toast-error {
-    background-image: url("./sad.png") !important;
+    background-image: url("../images/sad.png") !important;
 }
 
 #toast-container > .toast-success {
-    background-image: url("./happy.png") !important;
+    background-image: url("../images/happy.png") !important;
 }
 
 @media (max-width: 480px)  {

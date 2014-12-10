@@ -7,7 +7,7 @@
   <div class="wrapper">
     <form action="/accounts/register/" class="form-signin" method="post">
       {% csrf_token %}
-      <center><img src='{% static 'server/raspiwhite.png' %}'/></center>
+      <center><img src='{% static 'server/images/raspiwhite.png' %}'/></center>
       <input type="text" class="form-control" name="firstname" id="firstname" placeholder="First name" required="" autofocus="" />
       <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last name" required=""/>
       <input type="text" class="form-control" name="username" id="username" placeholder="Username" required="" autofocus="" />
