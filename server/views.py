@@ -13,6 +13,8 @@ from django_sse.redisqueue import send_event
 from django.contrib.auth import logout as logout_user
 import time
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 def create_player(user):
     try:
         models.Player.objects.get(user=user)
@@ -68,8 +70,18 @@ def register(request):
 @login_required
 def search_songs(request):
     if request.method == 'GET':
+        page = request.GET.get('page')
         q = request.GET.get('term', '')
         songs = models.Song.objects.filter(Q(title__icontains = q)|Q(artist__icontains = q ))
+        paginator = Paginator(songs, 2)
+        try:
+            songs = paginator.page(page)
+        except PageNotAnInteger:
+            songs = paginator.page(1)
+        except EmptyPage:
+            songs = paginator.page(paginator.num_pages)
+
+        paginated_results = {'total_pages' : paginator.num_pages}
         results = []
         for song in songs:
             song_json = {}
@@ -77,7 +89,8 @@ def search_songs(request):
             song_json['artist'] = song.artist
             song_json['title'] = song.title
             results.append(song_json)
-        data = json.dumps(results)
+        paginated_results['results'] = results
+        data = json.dumps(paginated_results)
         print data
     else:
         data = 'fail'
