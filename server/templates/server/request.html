@@ -71,10 +71,6 @@
           executeSearchWithPage($scope.query, $scope.current_page + 1);
         });
 
-        function process_results(data) {
-          $scope.songs = data['results'];
-        }
-
         function executeSearch(term) {
           executeSearchWithPage($scope.query, 1);
         }
@@ -85,7 +81,7 @@
             url += "&page=" + page;
           }
           $http.get(url).success(function(data) {
-            process_results(data);
+            $scope.songs = data['results'];
             $scope.pages = new Array();
             for (i = 0 ; i < data.total_pages ; i++) {
               $scope.pages.push({'number' : i + 1, 'active' : false});
@@ -95,6 +91,18 @@
         }
 
         executeSearchWithPage($scope.query, $scope.current_page + 1);
+
+        $scope.firstPage = function() {
+          return ($scope.current_page == 0);
+        }
+
+        $scope.isSinglePage = function() {
+          return ($scope.pages.length == 1);
+        }
+
+        $scope.lastPage = function() {
+          return ($scope.current_page == $scope.pages.length - 1);
+        }
 
         $scope.search = function() {
           executeSearch($scope.query);
@@ -119,18 +127,6 @@
               if (data.status !== undefined)
                 toastr.error(data.status);
             });
-        }
-
-        $scope.firstPage = function() {
-          return ($scope.current_page == 0);
-        }
-
-        $scope.isSinglePage = function() {
-          return ($scope.pages.length == 1);
-        }
-
-        $scope.lastPage = function() {
-          return ($scope.current_page == $scope.pages.length - 1);
         }
 
     });
