@@ -7,15 +7,6 @@
   <div class="container-fluid">
     <input class="form-control" placeholder="❤ ♬ Search the song you want to play ♬ ❤" id="songinput" ng-model="query" ng-change="search()">
     {% verbatim %}
-    <center>
-      <nav ng-show="!isSinglePage()">
-        <ul class="pagination">
-          <li ng-click='prevPage();' ng-class="firstPage() ? 'disabled' : ''"><a href='#'><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>
-          <li ng-repeat='page in pages' ng-click='goToPage(page);' ng-class="page.active ? 'active' : ''"><a>{{ page.number }}</a></li>
-          <li ng-click='nextPage();' ng-class="lastPage() ? 'disabled' : ''"><a href='#'><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>
-        </ul>
-      </nav>
-    </center>
 
     <div id="songlist" class="list-group"></div>
     <div class='list-group-item listelement clickable' ng-repeat="song in songs"
@@ -32,33 +23,56 @@
       <br style="clear: both"/>
     </div>
   </div>
-
+  {% verbatim %}
+  <center>
+    <nav ng-show="!isSinglePage()">
+      <ul class="pagination">
+        <li ng-class="firstPage() ? 'disabled' : ''">
+          <a href='/request/?query={{query}}&page={{pages[current_page].number - 1}}'>
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+        <li ng-repeat='page in pages' ng-class="page.active ? 'active' : ''">
+          <a ng-href="/request/?query={{query}}&page={{page.number}}">{{ page.number }}</a>
+        </li>
+        <li ng-class="lastPage() ? 'disabled' : ''">
+          <a href='/request/?query={{query}}&page={{pages[current_page].number + 1}}'>
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </center>
+  {% endverbatim %}
   <script type="text/javascript">
     app.config(['$httpProvider', function($httpProvider) {
         $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{ csrf_token|escapejs }}';
         $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
     }]);
-    app.controller('RaspiwhiteCtrl', function ($scope, $http) {
+    app.config(['$locationProvider', function($locationProvider) {
+        $locationProvider.html5Mode(true);
+    }]);
+    app.controller('RaspiwhiteCtrl', function ($scope, $http, $location) {
         $scope.nav = 'request';
         $scope.title = 'New request';
         $scope.pages = new Array();
         $scope.current_page = 0;
         $scope.query = '';
 
-        function process_results(data) {
-          $scope.songs = data['results'];
-        }
+        $scope.$on('$locationChangeSuccess', function () {
+          var parameters = $location.search();
+          if (parameters.page)
+            $scope.current_page = parameters.page - 1;
+          if (parameters.query)
+            $scope.query = parameters.query;
+
+          executeSearchWithPage($scope.query, $scope.current_page + 1);
+        });
 
         function executeSearch(term) {
-          var url = "/songs/?term=" + term;
-          $http.get(url).success(function(data) {
-            process_results(data);
-            $scope.pages = new Array();
-            for (i = 0 ; i < data.total_pages ; i++) {
-              $scope.pages.push({'number' : i + 1, 'active' : false});
-            }
-            $scope.pages[0]['active'] = true;
-          });
+          executeSearchWithPage($scope.query, 1);
         }
 
         function executeSearchWithPage(term, page) {
@@ -67,11 +81,28 @@
             url += "&page=" + page;
           }
           $http.get(url).success(function(data) {
-            process_results(data);
+            $scope.songs = data['results'];
+            $scope.pages = new Array();
+            for (i = 0 ; i < data.total_pages ; i++) {
+              $scope.pages.push({'number' : i + 1, 'active' : false});
+            }
+            $scope.pages[$scope.current_page]['active'] = true;
           });
         }
 
-        executeSearch($scope.query);
+        executeSearchWithPage($scope.query, $scope.current_page + 1);
+
+        $scope.firstPage = function() {
+          return ($scope.current_page == 0);
+        }
+
+        $scope.isSinglePage = function() {
+          return ($scope.pages.length == 1);
+        }
+
+        $scope.lastPage = function() {
+          return ($scope.current_page == $scope.pages.length - 1);
+        }
 
         $scope.search = function() {
           executeSearch($scope.query);
@@ -98,38 +129,6 @@
             });
         }
 
-        $scope.firstPage = function() {
-          return ($scope.current_page == 0);
-        }
-
-        $scope.isSinglePage = function() {
-          return ($scope.pages.length == 1);
-        }
-
-        $scope.lastPage = function() {
-          return ($scope.current_page == $scope.pages.length - 1);
-        }
-
-        $scope.nextPage = function() {
-          if ($scope.lastPage())
-            return;
-          $scope.goToPage($scope.pages[$scope.current_page + 1]);
-        }
-
-        $scope.prevPage = function() {
-          if ($scope.firstPage())
-            return;
-          $scope.goToPage($scope.pages[$scope.current_page - 1]);
-        }
-
-        $scope.goToPage = function(page) {
-          if ($scope.current_page == page.number - 1)
-            return;
-          page['active'] = true;
-          $scope.pages[$scope.current_page]['active'] = false;
-          $scope.current_page = page.number - 1;
-          executeSearchWithPage($scope.query, page.number);
-        }
     });
 
   </script>
