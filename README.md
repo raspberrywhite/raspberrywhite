@@ -7,7 +7,7 @@ Install dependencies
 
     $ pip install -r requirements.txt
 
-Make it runnung
+Make it running
 ---------------
 
     $ ./run.sh
