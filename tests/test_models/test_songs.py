@@ -35,3 +35,11 @@ class SongModelTestCase(django.test.TestCase):
         mock_time.time.return_value = 1
         song = Song.songs.get(title='Title 1')
         self.assertFalse(song.can_play())
+
+    @patch('server.models.time')
+    def test_play(self, mock_time):
+        mock_time.time.return_value = 2000
+        song = Song.songs.get(title='Title 1')
+        song.play()
+        song = Song.songs.get(title='Title 1')
+        self.assertEqual(song.last_time_play, 2000)

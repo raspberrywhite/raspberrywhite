@@ -23,6 +23,10 @@ class Song(models.Model):
         now = int(round(time.time()))
         return (now - self.last_time_play) >= 3600
 
+    def play(self):
+        now = int(round(time.time()))
+        self.last_time_play = now
+        self.save()
 
 class RequestManager(models.Manager):
     def get_queryset(self):
