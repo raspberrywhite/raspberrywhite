@@ -29,6 +29,13 @@ class Song(models.Model):
         self.last_time_play = now
         self.save()
 
+    def as_json(self):
+        song_json = {}
+        song_json['id'] = self.pk
+        song_json['artist'] = self.artist
+        song_json['title'] = self.title
+        return song_json
+
 class RequestManager(models.Manager):
     def get_queryset(self):
         return super(RequestManager, self).get_queryset().order_by('priority')
@@ -67,3 +74,10 @@ class Request(models.Model):
                 self.user.last_time_req = 0
             self.user.save()
         super(Request, self).save(*args, **kwargs)
+
+    def as_json(self):
+        request_json = {}
+        request_json['artist'] = self.song.artist
+        request_json['title'] = self.song.title
+        request_json['now_play'] = self.now_play
+        return request_json

@@ -65,13 +65,7 @@ def search_songs(request):
         except EmptyPage:
             songs = paginator.page(paginator.num_pages)
         paginated_results = {'total_pages' : paginator.num_pages}
-        results = []
-        for song in songs:
-            song_json = {}
-            song_json['id'] = song.pk
-            song_json['artist'] = song.artist
-            song_json['title'] = song.title
-            results.append(song_json)
+        results = [song.as_json() for song in songs]
         paginated_results['results'] = results
         data = json.dumps(paginated_results)
         return HttpResponse(data, 'application/json')
@@ -80,18 +74,9 @@ def search_songs(request):
 def get_current_playlist(request):
     if request.method == 'GET':
         requests = models.Request.requests.all()
-        results = []
-        for request in requests:
-            song_json = {}
-            song_json['artist'] = request.song.artist
-            song_json['title'] = request.song.title
-            song_json['now_play'] = request.now_play
-            results.append(song_json)
+        results = [request.as_json() for request in requests]
         data = json.dumps(results)
-    else:
-        data = 'fail'
-    mimetype = 'application/json'
-    return HttpResponse(data, mimetype)
+        return HttpResponse(data, 'application/json')
 
 @login_required
 def playlist(request):
