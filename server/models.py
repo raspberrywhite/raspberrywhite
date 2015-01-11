@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Q
+import hotstuff
 import time
 
 class Player(models.Model):
@@ -37,3 +38,9 @@ class Request(models.Model):
     priority = models.BigIntegerField()
     now_play = models.BooleanField(default=False)
     requests = RequestManager()
+
+    def save(self, *args, **kwargs):
+        self.priority = hotstuff.calc_priority_now(self.user.last_time_req)
+        self.user.last_time_req = self.user.last_time_req + self.priority
+        self.user.save()
+        super(Request, self).save(*args, **kwargs)
