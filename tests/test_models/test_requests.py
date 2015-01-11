@@ -40,3 +40,14 @@ class RequestModelTestCase(django.test.TestCase):
         self.assertEqual(request.priority, 0)
         self.assertEqual(request.user.last_time_req, 0)
 
+    def test_request_next(self):
+        request = Request.requests.next()
+        self.assertEqual(request.priority, 0)
+        requests = Request.requests.all()
+        self.assertEqual(len(requests), 3)
+
+        request = Request.requests.next()
+        self.assertEqual(request.priority, 2000)
+        requests = Request.requests.all()
+        self.assertEqual(len(requests), 2)
+

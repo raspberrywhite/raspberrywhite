@@ -35,6 +35,17 @@ class RequestManager(models.Manager):
     def get_max(self):
         return super(RequestManager, self).get_queryset().order_by('priority')[0]
 
+    def next(self):
+        try:
+            now_request = super(RequestManager, self).get(now_play=True)
+            now_request.delete()
+        except:
+            pass
+        max_priority_request = self.get_max()
+        max_priority_request.now_play = True
+        max_priority_request.save()
+        return max_priority_request
+
 class Request(models.Model):
     user = models.ForeignKey(Player)
     song = models.ForeignKey(Song)
@@ -43,10 +54,11 @@ class Request(models.Model):
     requests = RequestManager()
 
     def save(self, *args, **kwargs):
-        self.priority = self.user.last_time_req
-        self.user.last_time_req = self.user.last_time_req + int(round(time.time()))
-        if self.user.last_time_req >= 9223372036854775807:
-            self.priority = 0
-            self.user.last_time_req = 0
-        self.user.save()
+        if not self.pk:
+            self.priority = self.user.last_time_req
+            self.user.last_time_req = self.user.last_time_req + int(round(time.time()))
+            if self.user.last_time_req >= 9223372036854775807:
+                self.priority = 0
+                self.user.last_time_req = 0
+            self.user.save()
         super(Request, self).save(*args, **kwargs)
