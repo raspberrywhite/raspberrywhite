@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Q
+import time
 
 class Player(models.Model):
     user = models.OneToOneField('auth.User', primary_key=True, related_name='player')
@@ -17,6 +18,11 @@ class Song(models.Model):
     path = models.TextField(blank=True)
     last_time_play = models.BigIntegerField(default=0)
     songs = SongManager()
+
+    def can_play(self):
+        now = int(round(time.time()))
+        return (now - self.last_time_play) >= 3600
+
 
 class Request(models.Model):
     user = models.ForeignKey(Player)
