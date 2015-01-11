@@ -5,7 +5,7 @@ from server.models import Request, Song, Player
 
 class RequestModelTestCase(django.test.TestCase):
 
-    @patch('server.models.hotstuff.users.time')
+    @patch('server.models.time')
     def setUp(self, mock_time):
         self.user = AuthUser.objects.create_user(username='barry', email='barry@white.com',
             password='myeverything')
@@ -25,13 +25,13 @@ class RequestModelTestCase(django.test.TestCase):
 
     def test_get_request_with_max_priority(self):
         request = Request.requests.get_max()
-        self.assertEqual(request.priority, 100)
+        self.assertEqual(request.priority, 0)
 
-    @patch('server.models.hotstuff.users.time')
+    @patch('server.models.time')
     def test_save_priority_automatically(self, mock_time):
         mock_time.time.return_value = 2900
         request = Request.requests.create(user=self.player, song=self.song)
-        self.assertEqual(request.priority, 700)
+        self.assertEqual(request.priority, 6300)
 
     @patch('server.models.time')
     def test_request_priority_boundaries(self, mock_time):
