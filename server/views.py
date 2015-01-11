@@ -1,33 +1,17 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from django.http import HttpResponse
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from server import models
-import json
-import hotstuff
-from django.db.models import Q
+from django.contrib.auth import logout as logout_user
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core import serializers
+from django.http import HttpResponseRedirect
+from django.http import HttpResponse
+from django.shortcuts import render
 from django_sse.redisqueue import RedisQueueView
 from django_sse.redisqueue import send_event
-from django.contrib.auth import logout as logout_user
-import time
 
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
-def create_player(user):
-    try:
-        models.Player.objects.get(user=user)
-    except:
-        player = models.Player()
-        player.user = user
-        player.save()
-
-def get_player(user):
-    try:
-        return models.Player.objects.get(user=user)
-    except:
-        pass
+from server import models
+import json
 
 def logout(request):
     logout_user(request)
@@ -40,7 +24,7 @@ def login(request):
         next_page = request.POST.get('next', '/playlist')
         user = auth.authenticate(username=username, password=password)
         if user is not None and user.is_active:
-            create_player(user)
+            models.Player.objects.get_or_create(user=user)
             auth.login(request, user)
             return HttpResponseRedirect(next_page)
         else:
@@ -62,17 +46,16 @@ def register(request):
                                     password=password, first_name=firstname,
                                     last_name=lastname)
             user.save()
-            create_player(user)
+            models.Player.objects.get_or_create(user=user)
         return render(request, 'server/login.html')
     return render(request, 'server/register.html')
-
 
 @login_required
 def search_songs(request):
     if request.method == 'GET':
         page = request.GET.get('page')
         q = request.GET.get('term', '')
-        songs = models.Song.objects.filter(Q(title__icontains = q)|Q(artist__icontains = q ))
+        songs = models.Song.songs.query(q)
         paginator = Paginator(songs, 2)
         try:
             songs = paginator.page(page)
@@ -80,27 +63,22 @@ def search_songs(request):
             songs = paginator.page(1)
         except EmptyPage:
             songs = paginator.page(paginator.num_pages)
-
         paginated_results = {'total_pages' : paginator.num_pages}
         results = []
         for song in songs:
             song_json = {}
-            song_json['id'] = song.id
+            song_json['id'] = song.pk
             song_json['artist'] = song.artist
             song_json['title'] = song.title
             results.append(song_json)
         paginated_results['results'] = results
         data = json.dumps(paginated_results)
-        print data
-    else:
-        data = 'fail'
-    mimetype = 'application/json'
-    return HttpResponse(data, mimetype)
+        return HttpResponse(data, 'application/json')
 
 @login_required
 def get_current_playlist(request):
     if request.method == 'GET':
-        requests = models.Request.objects.order_by('priority')
+        requests = models.Request.requests.all()
         results = []
         for request in requests:
             song_json = {}
@@ -111,7 +89,6 @@ def get_current_playlist(request):
         data = json.dumps(results)
     else:
         data = 'fail'
-    print "MY DATA " + data
     mimetype = 'application/json'
     return HttpResponse(data, mimetype)
 
@@ -123,49 +100,27 @@ def playlist(request):
 def songrequest(request):
     if request.method == 'POST':
         id_song = request.POST.get('id_song', 123)
-        print id_song
-        song = models.Song.objects.get(id=id_song)
-        now = int(round(time.time() * 1000))
-        if (now - song.last_time_play) < 60000 * 60:
+        song = models.Song.songs.get(pk=id_song)
+        if song.can_play():
             return HttpResponse(json.dumps({'status':'Song recently played'}),
                 'application/json', status=405)
-        song.last_time_play = now
-        song.save()
-        user = get_player(request.user)
-        print user
-        print song
-        request = models.Request()
-        request.user = user
-        request.song = song
-        request.priority = hotstuff.calc_priority_now(user.last_time_req)
-        request.save()
-        user.last_time_req = request.priority
-        user.save()
+        song.play()
+        user = models.Player.objects.get_or_create(user=request.user)[0]
+        models.Request.requests.create(user=user, song=song)
         send_event('newsong', "ok", channel="foo")
-        return HttpResponse(json.dumps({'status':'{} added!'.format(song.title)}),
+        return HttpResponse(json.dumps({'status':'{0} added!'.format(song.title)}),
             'application/json', status=201)
     elif request.method == 'GET':
         return render(request, 'server/request.html')
 
 def get_next_song(request):
     if request.method == 'GET':
-        try:
-            now_request = models.Request.objects.get(now_play=True)
-            now_request.delete()
-        except:
-            pass
+        next_request = models.Request.requests.next()
+        path = next_request.song.path
         send_event('newsong', "ok", channel="foo")
-        requests = models.Request.objects.order_by('priority')
-        if requests:
-            max_priority_request = requests[0]
-            path = max_priority_request.song.path
-            max_priority_request.now_play = True
-            max_priority_request.save()
-            return HttpResponse(json.dumps({'path':path}), 'application/json')
-        #return HttpResponse(json.dumps({'status':'OK'}), 'application/json')
+        return HttpResponse(json.dumps({'path':path}), 'application/json')
 
 class SSE(RedisQueueView):
     def get_redis_channel(self):
         ch = self.redis_channel
-        print ch
         return ch
