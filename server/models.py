@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Q
-import hotstuff
 import time
 
 class Player(models.Model):
