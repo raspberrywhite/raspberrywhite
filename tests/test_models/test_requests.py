@@ -1,5 +1,6 @@
 import django
 from django.contrib.auth.models import User as AuthUser
+from django.core.exceptions import ObjectDoesNotExist
 from mock import patch
 from server.models import Request, Song, Player
 
@@ -50,4 +51,10 @@ class RequestModelTestCase(django.test.TestCase):
         self.assertEqual(request.priority, 2000)
         requests = Request.requests.all()
         self.assertEqual(len(requests), 2)
+
+    def test_request_next_with_no_elements(self):
+        Request.requests.next()
+        Request.requests.next()
+        Request.requests.next()
+        self.assertRaises(ObjectDoesNotExist, Request.requests.next)
 

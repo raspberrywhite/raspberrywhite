@@ -1,5 +1,6 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
+from django.db import models
 from django.db.models import Q
 import time
 
@@ -33,7 +34,9 @@ class RequestManager(models.Manager):
         return super(RequestManager, self).get_queryset().order_by('priority')
 
     def get_max(self):
-        return super(RequestManager, self).get_queryset().order_by('priority')[0]
+        requests = super(RequestManager, self).get_queryset().order_by('priority')
+        if len(requests) > 0:
+            return requests[0]
 
     def next(self):
         try:
@@ -42,6 +45,8 @@ class RequestManager(models.Manager):
         except:
             pass
         max_priority_request = self.get_max()
+        if not max_priority_request:
+            raise ObjectDoesNotExist()
         max_priority_request.now_play = True
         max_priority_request.save()
         return max_priority_request

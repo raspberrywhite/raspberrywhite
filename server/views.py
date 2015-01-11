@@ -2,8 +2,9 @@ from django.contrib import auth
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as logout_user
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core import serializers
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -115,7 +116,11 @@ def songrequest(request):
 
 def get_next_song(request):
     if request.method == 'GET':
-        next_request = models.Request.requests.next()
+        try:
+            next_request = models.Request.requests.next()
+        except ObjectDoesNotExist:
+            return HttpResponse(json.dumps({'status':'Request not found'}),
+                'application/json', status=404)
         path = next_request.song.path
         send_event('newsong', "ok", channel="foo")
         return HttpResponse(json.dumps({'path':path}), 'application/json')
