@@ -102,7 +102,7 @@ def songrequest(request):
     if request.method == 'POST':
         id_song = request.POST.get('id_song', 123)
         song = models.Song.songs.get(pk=id_song)
-        if song.can_play():
+        if not song.can_play():
             return HttpResponse(json.dumps({'status':'Song recently played'}),
                 'application/json', status=405)
         song.play()
