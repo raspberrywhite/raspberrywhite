@@ -24,8 +24,16 @@ class Song(models.Model):
         return (now - self.last_time_play) >= 3600
 
 
+class RequestManager(models.Manager):
+    def get_queryset(self):
+        return super(RequestManager, self).get_queryset().order_by('priority')
+
+    def get_max(self):
+        return super(RequestManager, self).get_queryset().order_by('priority')[0]
+
 class Request(models.Model):
     user = models.ForeignKey(Player)
     song = models.ForeignKey(Song)
     priority = models.BigIntegerField()
     now_play = models.BooleanField(default=False)
+    requests = RequestManager()
