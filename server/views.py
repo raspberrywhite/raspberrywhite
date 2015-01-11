@@ -103,12 +103,13 @@ def get_next_song(request):
     if request.method == 'GET':
         try:
             next_request = models.Request.requests.next()
+            path = next_request.song.path
+            send_event('newsong', "ok", channel="foo")
+            return HttpResponse(json.dumps({'path':path}), 'application/json')
         except ObjectDoesNotExist:
+            send_event('newsong', "ok", channel="foo")
             return HttpResponse(json.dumps({'status':'Request not found'}),
                 'application/json', status=404)
-        path = next_request.song.path
-        send_event('newsong', "ok", channel="foo")
-        return HttpResponse(json.dumps({'path':path}), 'application/json')
 
 class SSE(RedisQueueView):
     def get_redis_channel(self):
