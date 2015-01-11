@@ -42,8 +42,9 @@ class TestPlayerListener(django.test.TestCase):
 
     def test_listener(self):
         self.player.play(self.filename)
-        time.sleep(6)
+        time.sleep(1)
         self.player.pause()
+        time.sleep(1)
         self.player.resume()
         while self.player.isPlaying():
             pass

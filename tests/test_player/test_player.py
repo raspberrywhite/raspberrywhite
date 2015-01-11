@@ -21,8 +21,9 @@ class TestPlayer(django.test.TestCase):
 
     def test_play_commands(self):
         self.player.play(self.filename)
-        time.sleep(6)
+        time.sleep(1)
         self.player.pause()
+        time.sleep(1)
         assert self.player.getStatus() == player.PAUSE
         self.player.resume()
         assert self.player.getStatus() == player.PLAY
