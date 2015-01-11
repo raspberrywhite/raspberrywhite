@@ -31,8 +31,8 @@ class Mp3Listener(PlayerListener):
 class TestPlayerListener(django.test.TestCase):
 
     def setUp(self):
-        self.filename = 'tests/assets/test.mp3'
-        self.filename_bad = 'tests/assets/raspiwhite.png'
+        self.filename = 'player/tests/assets/test.mp3'
+        self.filename_bad = 'player/tests/assets/raspiwhite.png'
         self.player = Mp3Player()
         self.listener = Mp3Listener()
         self.player.attachListener(self.listener)
