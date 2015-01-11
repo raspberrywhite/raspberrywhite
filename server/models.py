@@ -40,7 +40,10 @@ class Request(models.Model):
     requests = RequestManager()
 
     def save(self, *args, **kwargs):
-        self.priority = hotstuff.calc_priority_now(self.user.last_time_req)
-        self.user.last_time_req = self.user.last_time_req + self.priority
+        self.priority = self.user.last_time_req
+        self.user.last_time_req = self.user.last_time_req + int(round(time.time()))
+        if self.user.last_time_req >= 9223372036854775807:
+            self.priority = 0
+            self.user.last_time_req = 0
         self.user.save()
         super(Request, self).save(*args, **kwargs)

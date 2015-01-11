@@ -33,3 +33,10 @@ class RequestModelTestCase(django.test.TestCase):
         request = Request.requests.create(user=self.player, song=self.song)
         self.assertEqual(request.priority, 700)
 
+    @patch('server.models.time')
+    def test_request_priority_boundaries(self, mock_time):
+        mock_time.time.return_value = 9223372036854775807
+        request = Request.requests.create(user=self.player, song=self.song)
+        self.assertEqual(request.priority, 0)
+        self.assertEqual(request.user.last_time_req, 0)
+
