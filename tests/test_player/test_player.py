@@ -1,8 +1,9 @@
+import django
 import player
 from player import Mp3Player, PlayerListener
 import time
 
-class TestPlayer():
+class TestPlayer(django.test.TestCase):
 
     def setUp(self):
         self.filename = 'tests/assets/test.mp3'
