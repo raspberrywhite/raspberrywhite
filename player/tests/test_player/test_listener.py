@@ -1,3 +1,4 @@
+import django
 import player
 from player import Mp3Player, PlayerListener
 import time
@@ -27,11 +28,11 @@ class Mp3Listener(PlayerListener):
     def onShutdown(self):
         self.steps['shutdown'] += 1
 
-class TestPlayerListener():
+class TestPlayerListener(django.test.TestCase):
 
     def setUp(self):
-        self.filename = 'tests/assets/test.mp3'
-        self.filename_bad = 'tests/assets/raspiwhite.png'
+        self.filename = 'player/tests/assets/test.mp3'
+        self.filename_bad = 'player/tests/assets/raspiwhite.png'
         self.player = Mp3Player()
         self.listener = Mp3Listener()
         self.player.attachListener(self.listener)
@@ -41,8 +42,9 @@ class TestPlayerListener():
 
     def test_listener(self):
         self.player.play(self.filename)
-        time.sleep(6)
+        time.sleep(1)
         self.player.pause()
+        time.sleep(1)
         self.player.resume()
         while self.player.isPlaying():
             pass

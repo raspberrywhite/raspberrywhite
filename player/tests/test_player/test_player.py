@@ -1,12 +1,13 @@
+import django
 import player
 from player import Mp3Player, PlayerListener
 import time
 
-class TestPlayer():
+class TestPlayer(django.test.TestCase):
 
     def setUp(self):
-        self.filename = 'tests/assets/test.mp3'
-        self.filename_bad = 'tests/assets/raspiwhite.png'
+        self.filename = 'player/tests/assets/test.mp3'
+        self.filename_bad = 'player/tests/assets/raspiwhite.png'
         self.player = Mp3Player()
 
     def tearDown(self):
@@ -20,8 +21,9 @@ class TestPlayer():
 
     def test_play_commands(self):
         self.player.play(self.filename)
-        time.sleep(6)
+        time.sleep(1)
         self.player.pause()
+        time.sleep(1)
         assert self.player.getStatus() == player.PAUSE
         self.player.resume()
         assert self.player.getStatus() == player.PLAY

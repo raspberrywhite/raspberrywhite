@@ -2,7 +2,6 @@ venv
 *.pyc
 *.zip
 .DS_Store
-tests/assets
 *.sqlite3
 components/
 songs/
