@@ -9,10 +9,17 @@ from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.shortcuts import render
 from django_sse.redisqueue import RedisQueueView
-from django_sse.redisqueue import send_event
+from django_sse.redisqueue import send_event as redis_event
+from redis.exceptions import ConnectionError
+import json
 
 from server import models
-import json
+
+def send_event(event_name, data, channel):
+    try:
+        redis_event(event_name, data, channel=channel)
+    except ConnectionError:
+        pass
 
 def logout(request):
     logout_user(request)
@@ -93,7 +100,10 @@ def songrequest(request):
         song.play()
         user = models.Player.objects.get_or_create(user=request.user)[0]
         models.Request.requests.create(user=user, song=song)
-        send_event('newsong', "ok", channel="foo")
+        try:
+            send_event('newsong', "ok", channel="foo")
+        except:
+            pass
         return HttpResponse(json.dumps({'status':'{0} added!'.format(song.title)}),
             'application/json', status=201)
     elif request.method == 'GET':
