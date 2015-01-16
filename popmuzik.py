@@ -25,11 +25,11 @@ class Popmuzik():
                 if 'path' in song_json:
                     self.__player.play(song_json['path'])
             else:
-                self.__onFetchingFail()
+                self.onFetchingFail()
         except ConnectionError:
-            self.__onFetchingFail()
+            self.onFetchingFail()
 
-    def __onFetchingFail(self):
+    def onFetchingFail(self):
         time.sleep(10)
         self.requestSong()
 
