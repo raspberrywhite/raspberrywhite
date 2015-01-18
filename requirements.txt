@@ -4,7 +4,7 @@ Jinja2==2.7.2
 MarkupSafe==0.21
 Werkzeug==0.9.4
 django-bower==5.0.1
-eyeD3==0.7.4
+https://bitbucket.org/nicfit/eyed3/get/tip.zip#egg=eyeD3-0.7.5
 gevent==1.0.1
 greenlet==0.4.2
 gunicorn==18.0
