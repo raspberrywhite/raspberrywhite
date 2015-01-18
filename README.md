@@ -1,6 +1,7 @@
 Raspberrywhite
 ==============
 [![Build Status][travis-image]][travis-url] [![Coveralls Status][coveralls-image]][coveralls-url]
+
 Your tiny social player. Use your MP3 collection to create a modern, portable and funny jukebox with Raspberry Pi.
 
 Install dependencies
