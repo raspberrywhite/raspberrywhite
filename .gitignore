@@ -6,3 +6,4 @@ venv
 components/
 songs/
 /static/
+*.rdb
