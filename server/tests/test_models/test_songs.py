@@ -5,10 +5,10 @@ from server.models import Song
 class SongModelTestCase(django.test.TestCase):
 
     def setUp(self):
-        Song.songs.create(title='Title 1', artist='Artist 1', path='Path 1', last_time_play=3600)
-        Song.songs.create(title='Title 2', artist='Artist 2', path='Path 2', last_time_play=0)
-        Song.songs.create(title='Title 3', artist='Artist 3', path='Path 3', last_time_play=0)
-        Song.songs.create(title='Title 4', artist='Artist 4', path='Path 4', last_time_play=0)
+        Song.songs.create(title='Title 1', artist='Artist 1', last_time_play=3600)
+        Song.songs.create(title='Title 2', artist='Artist 2', last_time_play=0)
+        Song.songs.create(title='Title 3', artist='Artist 3', last_time_play=0)
+        Song.songs.create(title='Title 4', artist='Artist 4', last_time_play=0)
 
     def test_filter_song_by_artist_title(self):
         songs = Song.songs.query('Title')

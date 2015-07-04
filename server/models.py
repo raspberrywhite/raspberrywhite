@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models import Q
+from filer.fields.file import FilerFileField
 import time
 
 class Player(models.Model):
@@ -16,9 +17,16 @@ class SongManager(models.Manager):
 class Song(models.Model):
     title = models.TextField()
     artist = models.TextField()
-    path = models.TextField(blank=True)
+    rawfile = FilerFileField(null=True, blank=True,
+                             related_name="song_rawfile")
     last_time_play = models.BigIntegerField(default=0)
     songs = SongManager()
+
+    @property
+    def path(self):
+        if not self.rawfile:
+            return None
+        return self.rawfile.path
 
     def can_play(self):
         now = int(round(time.time()))

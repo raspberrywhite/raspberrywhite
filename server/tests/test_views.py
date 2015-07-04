@@ -15,7 +15,7 @@ class SongRequestTest(TestCase):
         self.user = AuthUser.objects.create_user(username='barry', email='barry@white.com',
             password='myeverything')
         self.song = Song.songs.create(pk=43, title='Title 1',
-            artist='Artist 1', path='Path 1', last_time_play=0)
+            artist='Artist 1', last_time_play=0)
         self.client.login(username='barry', password='myeverything')
         self.client.post(
             '/request/',
@@ -31,7 +31,7 @@ class SongRequestTest(TestCase):
             password='myeverything')
         self.player = Player.objects.create(user=self.user)
         self.song = Song.songs.create(pk=43, title='Title 1',
-            artist='Artist 1', path='Path 1', last_time_play=0)
+            artist='Artist 1', last_time_play=0)
 
         mock_time.time.return_value = 2000
         Request.requests.create(user=self.player, song=self.song)
@@ -62,10 +62,10 @@ class PlaylistTest(TestCase):
         self.player = Player.objects.create(user=self.user)
 
         self.song1 = Song.songs.create(title='Title 1',
-            artist='Artist 1', path='Path 1', last_time_play=0)
+            artist='Artist 1', last_time_play=0)
 
         self.song2 = Song.songs.create(title='Title 2',
-            artist='Artist 2', path='Path 2', last_time_play=0)
+            artist='Artist 2', last_time_play=0)
 
         Request.requests.create(user=self.player, song=self.song1)
         Request.requests.create(user=self.player, song=self.song2)

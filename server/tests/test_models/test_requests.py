@@ -11,7 +11,7 @@ class RequestModelTestCase(django.test.TestCase):
         self.user = AuthUser.objects.create_user(username='barry', email='barry@white.com',
             password='myeverything')
         self.player = Player.objects.create(user=self.user)
-        self.song = Song.songs.create(title='Title 1', artist='Artist 1', path='Path 1', last_time_play=3600)
+        self.song = Song.songs.create(title='Title 1', artist='Artist 1', last_time_play=3600)
         mock_time.time.return_value = 2000
         Request.requests.create(user=self.player, song=self.song)
         mock_time.time.return_value = 2100
