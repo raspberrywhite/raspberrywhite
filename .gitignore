@@ -8,3 +8,4 @@ songs/
 /static/
 *.rdb
 .coverage
+filer_public
