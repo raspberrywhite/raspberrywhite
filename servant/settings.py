@@ -58,7 +58,9 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'server',
     'djangobower',
-    'gunicorn'
+    'gunicorn',
+    'filer',
+    'easy_thumbnails',
 )
 
 STATICFILES_FINDERS = (
