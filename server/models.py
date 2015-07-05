@@ -15,8 +15,8 @@ class SongManager(models.Manager):
         return super(SongManager, self).get_queryset().filter(Q(title__icontains = q)|Q(artist__icontains = q ))
 
 class Song(models.Model):
-    title = models.TextField()
-    artist = models.TextField()
+    title = models.CharField(max_length=150)
+    artist = models.CharField(max_length=100)
     rawfile = FilerFileField(null=True, blank=True,
                              related_name="song_rawfile")
     last_time_play = models.BigIntegerField(default=0)
