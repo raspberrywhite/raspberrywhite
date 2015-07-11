@@ -1,4 +1,4 @@
-angular.module('raspiwhite.controllers', [])
+angular.module('raspiwhite.controllers', ['raspiwhite.services'])
 
 .controller('RaspiWhiteController', function($scope) {
   $scope.current_space = {
@@ -15,11 +15,12 @@ angular.module('raspiwhite.controllers', [])
   $scope.current_space.title = 'Raspiwhite';
 })
 
-.controller('PlaylistController', function ($scope, $http) {
+.controller('PlaylistController', function ($scope, raspiwhiteclient) {
   $scope.current_space.nav = 'playlist';
   $scope.current_space.title = 'Playlist';
   function load_playlist() {
-    $http.get("/playlist/current").success(function(data) {
+    raspiwhiteclient.getPlaylist()
+    .success(function(data) {
       console.log(data);
       $scope.songs = data;
     });
@@ -32,7 +33,7 @@ angular.module('raspiwhite.controllers', [])
   load_playlist();
 })
 
-.controller('RequestController', function ($scope, $http, $location) {
+.controller('RequestController', function ($scope, $location, raspiwhiteclient) {
   $scope.current_space.nav = 'request';
   $scope.current_space.title = 'New request';
   $scope.pages = new Array();
@@ -54,11 +55,8 @@ angular.module('raspiwhite.controllers', [])
   }
 
   function executeSearchWithPage(term, page) {
-    var url = "/songs/?term=" + term;
-    if (page) {
-      url += "&page=" + page;
-    }
-    $http.get(url).success(function(data) {
+    raspiwhiteclient.searchSong(term, page)
+    .success(function(data) {
       $scope.songs = data['results'];
       $scope.pages = new Array();
       for (i = 0 ; i < data.total_pages ; i++) {
@@ -89,7 +87,7 @@ angular.module('raspiwhite.controllers', [])
   $scope.sendrequest = function(song) {
     $current_song = song;
     $current_song.is_loading = true;
-    $http.post("/request/", $.param({ id_song: $current_song.id }))
+    raspiwhiteclient.newRequest($current_song.id)
     .success(function(data) {
       $current_song.is_loading = false;
       toastr.options = {
