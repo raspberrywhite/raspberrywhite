@@ -1,10 +1,13 @@
 angular.module('raspiwhite.controllers', ['raspiwhite.services'])
 
-.controller('RaspiWhiteController', function($scope) {
+.controller('RaspiWhiteController', function($scope, notifier) {
   $scope.current_space = {
     nav: '',
     title: 'Raspiwhite'
   }
+  notifier.configure({
+    positionClass: "toast-bottom-right"
+  });
 })
 
 .controller('RegisterController', function($scope) {
@@ -21,19 +24,17 @@ angular.module('raspiwhite.controllers', ['raspiwhite.services'])
   function load_playlist() {
     raspiwhiteclient.getPlaylist()
     .success(function(data) {
-      console.log(data);
       $scope.songs = data;
     });
   }
   var source = new EventSource("/sse/foo");
   source.addEventListener('newsong', function(e) {
-    console.log(e.data);
     load_playlist();
   }, false);
   load_playlist();
 })
 
-.controller('RequestController', function ($scope, $location, raspiwhiteclient) {
+.controller('RequestController', function ($scope, $location, raspiwhiteclient, notifier) {
   $scope.current_space.nav = 'request';
   $scope.current_space.title = 'New request';
   $scope.pages = new Array();
@@ -90,18 +91,12 @@ angular.module('raspiwhite.controllers', ['raspiwhite.services'])
     raspiwhiteclient.newRequest($current_song.id)
     .success(function(data) {
       $current_song.is_loading = false;
-      toastr.options = {
-        "positionClass": "toast-bottom-right",
-      };
-      toastr.success(data.status);
+      notifier.success(data.status);
     })
     .error(function(data) {
       $current_song.is_loading = false;
-      toastr.options = {
-        "positionClass": "toast-bottom-right",
-      };
       if (data.status !== undefined)
-        toastr.error(data.status);
+        notifier.error(data.status);
     });
   }
 });

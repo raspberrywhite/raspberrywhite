@@ -17,4 +17,22 @@ angular.module('raspiwhite.services', [])
       return $http.post('/request/', $.param({ id_song: id }))
     };
 
+  })
+
+  .service('notifier', function($http) {
+
+    this.configure = function(options) {
+      toastr.options = {
+        "positionClass": options.positionClass,
+      };
+    }
+
+    this.success = function (data) {
+      toastr.success(data);
+    };
+
+    this.error = function (data) {
+      toastr.error(data);
+    };
+
   });
