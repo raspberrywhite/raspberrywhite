@@ -4,57 +4,29 @@
 
 {% block content %}
 
-  <div class="container-fluid">
-    <div class="centerwrapper" ng-show="songs.length == 0">
-      <center>
-        <h1>Playlist is empty!</h1>
-        <a class='nounderline' href="/request">
-          <div class="btn btn-lg btn-primary btn-block">+ New request</div>
-        </a>
-      </center>
-    </div>
-    {% verbatim %}
-    <div class='list-group-item listelement' ng-repeat="song in songs" data-song-id='{{ song.e }}'>
-      <div class='listelementleft'>
-        <h4 class='list-group-item-heading'>{{ song.artist }}</h4>
-        <p class='list-group-item-text'>{{ song.title }}</p>
-      </div>
-      {% endverbatim %}
-      <div class='listelementright'>
-        <img style="height:50px;"
-          src="{% static 'server/images/playicon.png' %}" ng-show="song.now_play"/>
-        <div style="height:50px;" ng-hide="song.now_play"></div>
-      </div>
-      <br style="clear: both"/>
-    </div>
+<div class="container-fluid" ng-controller="PlaylistController">
+  <div class="centerwrapper" ng-show="songs.length == 0">
+    <center>
+      <h1>Playlist is empty!</h1>
+      <a class='nounderline' href="/request">
+        <div class="btn btn-lg btn-primary btn-block">+ New request</div>
+      </a>
+    </center>
   </div>
-
-  <script type="text/javascript">
-    app.config(['$httpProvider', function($httpProvider) {
-        $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{ csrf_token|escapejs }}';
-        $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
-    }]);
-    app.controller('RaspiwhiteCtrl', function ($scope, $http) {
-      $scope.nav = 'playlist';
-      $scope.title = 'Playlist';
-      function load_playlist() {
-        $http.get("/playlist/current").success(function(data) {
-          console.log(data);
-          $scope.songs = data;
-        });
-      }
-
-      var source = new EventSource("/sse/foo");
-
-      source.addEventListener('newsong', function(e) {
-        console.log(e.data);
-        load_playlist();
-      }, false);
-
-      load_playlist();
-
-    });
-
-  </script>
+  {% verbatim %}
+  <div class='list-group-item listelement' ng-repeat="song in songs" data-song-id='{{ song.e }}'>
+    <div class='listelementleft'>
+      <h4 class='list-group-item-heading'>{{ song.artist }}</h4>
+      <p class='list-group-item-text'>{{ song.title }}</p>
+    </div>
+    {% endverbatim %}
+    <div class='listelementright'>
+      <img style="height:50px;"
+        src="{% static 'server/images/playicon.png' %}" ng-show="song.now_play"/>
+      <div style="height:50px;" ng-hide="song.now_play"></div>
+    </div>
+    <br style="clear: both"/>
+  </div>
+</div>
 
 {% endblock %}
