@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block content %}
-
+<div ng-controller="RequestController">
   <div class="container-fluid">
     <input class="form-control" placeholder="❤ ♬ Search the song you want to play ♬ ❤" id="songinput" ng-model="query" ng-change="search()">
     {% verbatim %}
@@ -46,91 +46,5 @@
     </nav>
   </center>
   {% endverbatim %}
-  <script type="text/javascript">
-    app.config(['$httpProvider', function($httpProvider) {
-        $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{ csrf_token|escapejs }}';
-        $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
-    }]);
-    app.config(['$locationProvider', function($locationProvider) {
-        $locationProvider.html5Mode(true);
-    }]);
-    app.controller('RaspiwhiteCtrl', function ($scope, $http, $location) {
-        $scope.nav = 'request';
-        $scope.title = 'New request';
-        $scope.pages = new Array();
-        $scope.current_page = 0;
-        $scope.query = '';
-
-        $scope.$on('$locationChangeSuccess', function () {
-          var parameters = $location.search();
-          if (parameters.page)
-            $scope.current_page = parameters.page - 1;
-          if (parameters.query)
-            $scope.query = parameters.query;
-
-          executeSearchWithPage($scope.query, $scope.current_page + 1);
-        });
-
-        function executeSearch(term) {
-          executeSearchWithPage($scope.query, 1);
-        }
-
-        function executeSearchWithPage(term, page) {
-          var url = "/songs/?term=" + term;
-          if (page) {
-            url += "&page=" + page;
-          }
-          $http.get(url).success(function(data) {
-            $scope.songs = data['results'];
-            $scope.pages = new Array();
-            for (i = 0 ; i < data.total_pages ; i++) {
-              $scope.pages.push({'number' : i + 1, 'active' : false});
-            }
-            $scope.pages[$scope.current_page]['active'] = true;
-          });
-        }
-
-        executeSearchWithPage($scope.query, $scope.current_page + 1);
-
-        $scope.firstPage = function() {
-          return ($scope.current_page == 0);
-        }
-
-        $scope.isSinglePage = function() {
-          return ($scope.pages.length == 1);
-        }
-
-        $scope.lastPage = function() {
-          return ($scope.current_page == $scope.pages.length - 1);
-        }
-
-        $scope.search = function() {
-          executeSearch($scope.query);
-        }
-
-        $scope.sendrequest = function(song) {
-          $current_song = song;
-          $current_song.is_loading = true;
-          $http.post("/request/", $.param({ id_song: $current_song.id }))
-            .success(function(data) {
-              $current_song.is_loading = false;
-              toastr.options = {
-                "positionClass": "toast-bottom-right",
-              };
-              toastr.success(data.status);
-            })
-            .error(function(data) {
-              $current_song.is_loading = false;
-              toastr.options = {
-                "positionClass": "toast-bottom-right",
-              };
-              if (data.status !== undefined)
-                toastr.error(data.status);
-            });
-        }
-
-    });
-
-  </script>
-
+</div>
 {% endblock %}

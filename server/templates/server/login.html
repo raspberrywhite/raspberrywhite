@@ -4,26 +4,18 @@
 
 {% block content %}
 
-  <div class="wrapper">
-    <form action="/accounts/login/" class="form-signin" method="post">
-      {% csrf_token %}
-      <center><img src='{% static 'server/images/raspiwhite.png' %}'/></center>
-      <input type="text" class="form-control" id="username" name="username" placeholder="Username" required="" autofocus="" />
-      <input type="password" class="form-control" id="password" name="password" placeholder="Password" required=""/>
-      <input type="hidden" name="next" id="next" value="{{next}}" />
-
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
-
-      <a class='nounderline' href="{% url 'social:begin' 'facebook' %}?next={{ next }}"><div class="btn btn-lg btn-primary btn-block">Login with Facebook</div></a>
-      <center>or</center>
-      <a class='nounderline' href="/accounts/register"><div class="btn btn-lg btn-primary btn-block">Register a new user</div></a>
-    </form>
-  </div>
-
-  <script type="text/javascript">
-    app.controller('RaspiwhiteCtrl', function ($scope) {
-      $scope.title = 'Raspiwhite';
-    });
-  </script>
+<div class="wrapper" ng-controller="LoginController">
+  <form action="/accounts/login/" class="form-signin" method="post">
+    {% csrf_token %}
+    <center><img src='{% static 'server/images/raspiwhite.png' %}'/></center>
+    <input type="text" class="form-control" id="username" name="username" placeholder="Username" required="" autofocus="" />
+    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required=""/>
+    <input type="hidden" name="next" id="next" value="{{next}}" />
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+    <a class='nounderline' href="{% url 'social:begin' 'facebook' %}?next={{ next }}"><div class="btn btn-lg btn-primary btn-block">Login with Facebook</div></a>
+    <center>or</center>
+    <a class='nounderline' href="/accounts/register"><div class="btn btn-lg btn-primary btn-block">Register a new user</div></a>
+  </form>
+</div>
 
 {% endblock %}

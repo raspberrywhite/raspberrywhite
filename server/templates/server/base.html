@@ -6,9 +6,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <link rel="stylesheet" href='{% static 'bootstrap/dist/css/bootstrap.min.css' %}'>
-
   <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-
   <link rel="stylesheet" href='{% static 'toastr/toastr.min.css' %}'>
   <link rel="stylesheet" href='{% static 'server/css/main.css' %}'>
   <script type="text/javascript" src='{% static 'jquery/jquery.js' %}'></script>
@@ -16,13 +14,14 @@
   <script type="text/javascript" src='{% static 'bootstrap/dist/js/bootstrap.js' %}'></script>
   <script type="text/javascript" src='{% static 'toastr/toastr.min.js' %}'></script>
   <script src='{% static 'angular/angular.js' %}'></script>
-
+  <script src='{% static 'server/js/app.js' %}'></script>
+  <script src='{% static 'server/js/controllers.js' %}'></script>
+  <script src='{% static 'server/js/services.js' %}'></script>
 </head>
 
-<body ng-controller="RaspiwhiteCtrl">
+<body ng-controller="RaspiWhiteController">
     <nav class="navbar navbar-inverse navbar-fixed-top navbar-absolute" role="navigation" style="border-radius: 0;">
       <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
             <span class="sr-only">Toggle navigation</span>
@@ -34,30 +33,28 @@
             <img style="height:40px; margin-top: -14px;"
              src="{% static 'server/images/raspiwhite-invert.png' %}">
              {% verbatim %}
-             <span class="whitetitle">{{title}}</span>
+             <span class="whitetitle">{{current_space.title}}</span>
              {% endverbatim %}
           </a>
         </div>
-
         {% if user.is_active %}
-        <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
             {% verbatim %}
-            <li ng-class="{'active': nav=='playlist'}"><a target="_self" href="/playlist">Playlist</a></li>
-            <li ng-class="{'active': nav=='request'}"><a href="/request">New request</a></li>
+            <li ng-class="{'active': current_space.nav=='playlist'}"><a target="_self" href="/playlist">Playlist</a></li>
+            <li ng-class="{'active': current_space.nav=='request'}"><a href="/request">New request</a></li>
             {% endverbatim %}
             <li><a target="_self" href="/accounts/logout">Logout {{user.first_name}} {{user.last_name}}</a></li>
           </ul>
-        </div><!-- /.navbar-collapse -->
+        </div>
         {% endif %}
-      </div><!-- /.container-fluid -->
+      </div>
     </nav>
     <div id="content">
-        <script type="text/javascript">
-          var app = angular.module( "Raspiwhite", [] );
-        </script>
-        {% block content %}{% endblock %}
+      {% block content %}{% endblock %}
     </div>
+    <script type="text/javascript">
+      startRaspberryWhite('{{ csrf_token|escapejs }}');
+    </script>
 </body>
 </html>
