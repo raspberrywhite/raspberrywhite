@@ -19,3 +19,4 @@ requests-oauthlib==0.4.1
 six==1.7.2
 sse==1.2
 wsgiref==0.1.2
+django-filer==0.9.10
