@@ -8,6 +8,15 @@ Install dependencies
 --------------------
 
     $ pip install -r requirements.txt
+    
+Troubleshouting
+---------------
+
+Under OSX 10.10.5 and 10.11.x is it possible to get an error while installing ```gevent`` package from **pip** it can be fixed installing gevent with this command:
+
+```
+CFLAGS='-std=c99' pip install gevent==1.0.1
+```
 
 Make it running
 ---------------
