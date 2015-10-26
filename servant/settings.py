@@ -107,7 +107,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details',
-    'server.create_player_after_login'
+    'server.models.create_player_after_login'
 )
 
 LOGIN_REDIRECT_URL = get_env_variable("RASPBERRYWHITE_LOGIN_REDIRECT_URL")

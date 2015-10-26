@@ -89,3 +89,8 @@ class Request(models.Model):
         request_json['title'] = self.song.title
         request_json['now_play'] = self.now_play
         return request_json
+
+
+def create_player_after_login(strategy, user, response,
+    is_new=False, *args, **kwargs):
+    models.Player.objects.get_or_create(user=user)
