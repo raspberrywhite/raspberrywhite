@@ -1,4 +1,4 @@
-Django==1.7.8
+Django==1.8.5
 Flask==0.10.1
 Jinja2==2.7.2
 MarkupSafe==0.18
@@ -19,7 +19,7 @@ itsdangerous==0.23
 oauthlib==0.6.3
 python-magic==0.4.6
 python-openid==2.2.5
-python-social-auth==0.1.26
+python-social-auth==0.2.13
 redis==2.10.1
 requests==2.2.1
 requests-oauthlib==0.4.1
